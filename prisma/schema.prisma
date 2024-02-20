@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ユーザーテーブル
+model Profiles {
+  id                 String @id @db.Uuid
+  name               String?
+  height             Int?
+  bodyMeasurements   BodyMeasurements[]
+  workouts           Workouts[]
+  exercises          Exercises[]
+  @@map("profile")
+}
+
+// 体重テーブル
+model BodyMeasurements {
+  id                 Int @id @default(autoincrement())
+  users              Profiles @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId             String @db.Uuid
+  weight             Int
+  bodyFatPercentage  Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+// 筋トレテーブル
+model Workouts {
+  id                 Int @id @default(autoincrement())
+  users              Profiles @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId             String @db.Uuid
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  workoutDetails     WorkoutDetails[]
+}
+
+// 筋トレ詳細テーブル
+model WorkoutDetails {
+  id                 Int @id @default(autoincrement())
+  workouts           Workouts @relation(fields: [workoutId], references: [id])
+  workoutId          Int
+  exercises          Exercises @relation(fields: [exerciseId], references: [id])
+  exerciseId         Int
+  memo               String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  setDetails         SetDetails[]
+}
+
+// セット詳細テーブル
+model SetDetails {
+  id                 Int @id @default(autoincrement())
+  workoutDetails     WorkoutDetails @relation(fields: [workoutDetailId], references: [id])
+  workoutDetailId    Int
+  setNumber          Int
+  reps               Int
+  weight             Int
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+// 筋肉の部位テーブル
+model MuscleGroups {
+  id                Int @id @default(autoincrement())
+  name              String @unique
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  exercises         Exercises[]
+}
+
+// 筋トレ種目テーブル
+model Exercises {
+  id                Int @id @default(autoincrement())
+  users             Profiles? @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId            String? @db.Uuid
+  muscleGroups      MuscleGroups @relation(fields: [muscleGroupId], references: [id])
+  muscleGroupId     Int
+  name              String @unique
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt 
+  workoutDetails    WorkoutDetails[]
+}
+
+// お問い合わせテーブル
+model Contacts {
+  id                Int @id @default(autoincrement())
+  title             String
+  email             String
+  content           String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
