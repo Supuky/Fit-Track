@@ -20,7 +20,7 @@ export default function LoginPage() {
     if (error) {
       alert('ログインに失敗しました');
     } else {
-      router.replace('/admin/dashboard');
+      router.replace('/dashboard');
     };
   };
 
