@@ -19,14 +19,13 @@ model Profiles {
 }
 
 model BodyMeasurements {
-  id                Int       @id @default(autoincrement())
-  userId            String    @db.Uuid
+  id                Int      @id @default(autoincrement())
+  userId            String   @db.Uuid
   weight            Int
   bodyFatPercentage Int?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  measuredAt        DateTime?
-  users             Profiles  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  users             Profiles @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("bodyMeasurements")
 }
@@ -36,7 +35,6 @@ model Workouts {
   userId         String           @db.Uuid
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
-  workoutedAt    DateTime?
   workoutDetails WorkoutDetails[]
   users          Profiles         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -52,7 +50,7 @@ model WorkoutDetails {
   updatedAt  DateTime     @updatedAt
   setDetails SetDetails[]
   exercises  Exercises    @relation(fields: [exerciseId], references: [id])
-  workouts   Workouts     @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  workouts   Workouts     @relation(fields: [workoutId], references: [id])
 
   @@map("workoutDetails")
 }
@@ -65,7 +63,7 @@ model SetDetails {
   weight          Int
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
-  workoutDetails  WorkoutDetails @relation(fields: [workoutDetailId], references: [id], onDelete: Cascade)
+  workoutDetails  WorkoutDetails @relation(fields: [workoutDetailId], references: [id])
 
   @@map("setDetails")
 }
@@ -84,7 +82,7 @@ model Exercises {
   id             Int              @id @default(autoincrement())
   userId         String?          @db.Uuid
   muscleGroupId  Int
-  name           String
+  name           String           @unique
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   muscleGroups   MuscleGroups     @relation(fields: [muscleGroupId], references: [id])
