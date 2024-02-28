@@ -1,6 +1,6 @@
-import { supabase } from "@/utils/supabaseClient";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { getUserData } from "@/utils/supabaseGetUser";
 
 const prisma = new PrismaClient();
 
@@ -8,9 +8,7 @@ export async function PUT(
   request: NextRequest,
   params: { params: { weightId: string } }
 ) {
-  const token = request.headers.get("Authorization") ?? "";
-
-  const { data, error } = await supabase.auth.getUser(token);
+  const { data, error } = await getUserData(request);
 
   if(error) throw new Error();
 
@@ -24,7 +22,7 @@ export async function PUT(
     const weights = await prisma.bodyMeasurements.update({
       where: {
         id: parseInt(weightId),
-        userId: data.user.id,
+        userId: data.user!.id,
       },
       data: {
         weight: weight,
@@ -42,9 +40,7 @@ export async function DELETE(
   request: NextRequest, 
   params: { params: { weightId: string } }
 ) {
-  const token = request.headers.get("Authorization") ?? "";
-
-  const { data, error } = await supabase.auth.getUser(token);
+  const { data, error } = await getUserData(request);
 
   if(error) throw new Error();
 
@@ -54,7 +50,7 @@ export async function DELETE(
     const weights = await prisma.bodyMeasurements.delete({
       where: {
         id: parseInt(weightId),
-        userId: data.user.id,
+        userId: data.user!.id,
       }
     });
 

@@ -1,6 +1,6 @@
-import { supabase } from "@/utils/supabaseClient";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server"; 
+import { getUserData } from "@/utils/supabaseGetUser";
 
 const prisma = new PrismaClient();
 
@@ -8,9 +8,7 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { muscle_groupId: string } }
 ) {
-  const token = request.headers.get("Authorization") ?? "";
-
-  const { data, error } = await supabase.auth.getUser(token);
+  const { data, error } = await getUserData(request);
 
   if(error) throw new Error();
 
@@ -20,7 +18,7 @@ export async function GET(
     const exercises = await prisma.exercises.findMany({
       where: {
         muscleGroupId: parseInt(id),
-        userId: data.user.id,
+        userId: data.user!.id,
       },
     });
 
@@ -34,9 +32,7 @@ export async function POST(
   request: NextRequest,
   { params }: { params: { muscle_groupId: string } },
 ) {
-  const token = request.headers.get("Authorization") ?? "";
-
-  const { data, error } = await supabase.auth.getUser(token);
+  const { data, error } = await getUserData(request);
 
   if(error) throw new Error();
 
@@ -48,7 +44,7 @@ export async function POST(
   try {
     const exercises = await prisma.exercises.create({
       data: {
-        userId: data.user.id,
+        userId: data.user!.id,
         muscleGroupId: parseInt(id),
         name: name
       }

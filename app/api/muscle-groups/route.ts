@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 export async function GET(request: NextRequest) {
   try {
     const muscleGroups = await prisma.muscleGroups.findMany();
-    // console.log(muscleGroups);
 
     return NextResponse.json({ muscleGroups: muscleGroups }, { status: 200 });
   } catch (error) {

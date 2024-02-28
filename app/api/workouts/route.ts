@@ -1,20 +1,18 @@
-import { supabase } from "@/utils/supabaseClient";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { getUserData } from "@/utils/supabaseGetUser";
 
 const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
-  const token = request.headers.get("Authorization") ?? "";
-
-  const { data, error } = await supabase.auth.getUser(token);
+  const { data, error } = await getUserData(request);
 
   if(error) throw new Error();
 
   try {
     const workouts = await prisma.workouts.findMany({
       where: {
-        userId: data.user.id,
+        userId: data.user!.id,
       },
       include: { 
         workoutDetails: {
@@ -31,12 +29,8 @@ export async function GET(request: NextRequest) {
   };
 };
 
-// exerciseId: 2, memo: "3セット", setNumber: 3, reps: [10, 10, 8], weight: [20, 20, 20]
-
 export async function POST(request: NextRequest) {
-  const token = request.headers.get("Authorization") ?? "";
-
-  const { data, error } = await supabase.auth.getUser(token);
+  const { data, error } = await getUserData(request);
 
   if(error) throw new Error();
 
@@ -47,7 +41,7 @@ export async function POST(request: NextRequest) {
   try {
     const workout = await prisma.workouts.create({
       data: {
-        userId: data.user.id
+        userId: data.user!.id
       }
     });
 
@@ -59,18 +53,16 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    let setDetails = [];
+    let exerciseSets = [];
     for(let i = 0; i < setNumber; i++) {
-      const setDetail = await prisma.setDetails.create({
-        data: {
-          workoutDetailId: workoutDetail.id,
-          setNumber: i + 1,
-          reps: reps[i],
-          weight: weight[i]
-        },
-      });
-      setDetails.push(setDetail);
-    }
+      exerciseSets.push({workoutDetailId: workoutDetail!.id, setNumber: i+1, reps: parseInt(reps[i]), weight: parseInt(weight[i]) });
+    };
+
+    const setDetails = await prisma.setDetails.createMany({
+      data: [
+        ...exerciseSets,
+      ],
+    });
 
     return NextResponse.json({ workout, workoutDetail, setDetails }, { status: 200 });
   } catch (error) {

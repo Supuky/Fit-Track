@@ -1,13 +1,11 @@
-import { supabase } from "@/utils/supabaseClient";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { getUserData } from "@/utils/supabaseGetUser";
 
 const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
-  const token = request.headers.get("Authorization") ?? "";
-
-  const { data, error } = await supabase.auth.getUser(token);
+  const { data, error } = await getUserData(request);
 
   if(error) throw new Error();
 
@@ -16,7 +14,7 @@ export async function GET(request: NextRequest) {
 
     const exercises = await prisma.exercises.findMany({
       where: {
-        userId: data.user.id,
+        userId: data.user!.id,
       },
       include: {
         muscleGroups: true,
