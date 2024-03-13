@@ -1,30 +1,27 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import React from 'react';
 
-export default function SignupPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+interface Props {
+  mode : "signup" | "login",
+  email: string,
+  setEmail: (email: string) => void,
+  password: string,
+  setPassword: (password: string) => void,
+  onSubmit: (e: React.FormEvent) => Promise<void>
+};
 
-  const handleCreateProfileSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const response = await fetch("/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    })
-
-    const { data } = await response.json();
-
-    alert("確認メールを送信しました。");
-  };
-
+const Form: React.FC<Props> = ({
+  mode,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  onSubmit
+}) => {
   return (
     <div className="flex justify-center pt-[240px]">
-      <form onSubmit={handleCreateProfileSubmit} className="space-y-4 w-full max-w-[400px]">
+      <form onSubmit={onSubmit} className="space-y-4 w-full max-w-[400px]">
         <div>
           <label
             htmlFor="email"
@@ -67,10 +64,14 @@ export default function SignupPage() {
             type="submit"
             className="w-full text-white bg-primary-pale hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary-pale focus-visible:outline-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            登録
+            {
+              mode === "signup" ? "新規登録" : "ログイン"
+            }
           </button>
         </div>
       </form>
     </div>
   );
 };
+
+export default Form;

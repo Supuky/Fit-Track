@@ -6,22 +6,27 @@ const prisma = new PrismaClient();
 
 export async function GET(
   request: NextRequest,
-  params: { params: { workoutId: string, exerciseId: string } },
+  params: { params: { workoutDetailId: string, exerciseId: string } },
 ) {
   const { data, error } = await getUserData(request);
 
   if(error) throw new Error();
 
-  const { params: { workoutId, exerciseId } } = params;
+  const { params: { workoutDetailId, exerciseId } } = params;
 
   try {
     const workoutDetails = await prisma.workoutDetails.findFirst({
       where: {
-        workoutId: parseInt(workoutId),
+        id: parseInt(workoutDetailId),
         exerciseId: parseInt(exerciseId),
       },
       include: {
-        setDetails: true
+        setDetails: {
+          select: {
+            reps: true,
+            weight: true,
+          }
+        },
       },
     });
 
@@ -33,26 +38,31 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  params: { params: { workoutId: string, exerciseId: string } },
+  params: { params: { workoutDetailId: string, exerciseId: string } },
 ) {
   const { data, error } = await getUserData(request);
 
   if(error) throw new Error();
 
-  const { params: { workoutId, exerciseId } } = params;
+  const { params: { workoutDetailId, exerciseId } } = params;
 
+  
   const body = await request.json();
+  
+  const { memo, workouts } = body;
 
-  const { memo, setNumber, reps, weight } = body;
+  const setNumber = workouts.length;
   
   async function transfer() {
     return prisma.$transaction(async () => {
       const workoutDetail = await prisma.workoutDetails.findFirst({
         where: {
-          workoutId: parseInt(workoutId),
+          id: parseInt(workoutDetailId),
           exerciseId: parseInt(exerciseId),
         },
       });
+
+      console.log(workoutDetail);
 
       if(!workoutDetail) throw new Error("更新できませんでした");
   
@@ -64,6 +74,8 @@ export async function PUT(
           memo: memo
         },
       });
+
+      console.log(workoutDetailUpdate);
   
       await prisma.setDetails.deleteMany({
         where: {
@@ -73,14 +85,18 @@ export async function PUT(
   
       let exerciseSets = [];
       for(let i = 0; i < setNumber; i++) {
-        exerciseSets.push({workoutDetailId: workoutDetail.id, setNumber: i+1, reps: parseInt(reps[i]), weight: parseInt(weight[i]) });
+        exerciseSets.push({workoutDetailId: workoutDetail.id, setNumber: i+1, reps: parseInt(workouts[i].reps), weight: parseInt(workouts[i].weight) });
       };
+
+      console.log(exerciseSets);
   
       const setDetails = await prisma.setDetails.createMany({
         data: [
           ...exerciseSets,
         ],
       });
+
+      console.log(setDetails);
 
       return { workoutDetail, setDetails };
     },
@@ -102,18 +118,30 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  params: { params: { workoutId: string, exerciseId: string } },
+  params: { params: { workoutDetailId: string, exerciseId: string } },
 ) {
   const { data, error } = await getUserData(request);
 
   if(error) throw new Error();
 
-  const { params: { workoutId } } = params;
+  const { params: { workoutDetailId } } = params;
   
   try {
+    const workoutDetails = await prisma.workoutDetails.findUnique({
+      where: {
+        id: parseInt(workoutDetailId)
+      },
+      select: {
+        workoutId: true,
+      },
+    });
+
+    if(workoutDetails === null) throw new Error();
+    const { workoutId } = workoutDetails;
+
     await prisma.workouts.delete({
       where: {
-        id: parseInt(workoutId)
+        id: workoutId
       },
     });
 

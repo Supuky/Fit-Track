@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
         userId: data.user!.id,
       },
       orderBy: {
-        createdAt: "desc"
+        measuredAt: "asc"
       },
     });
 
@@ -32,14 +32,15 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-  const { weight, bodyFatPercentage } = body;
+  const { weight, bodyFatPercentage, date } = body;
 
   try {
     const weights = await prisma.bodyMeasurements.create({
       data: {
         userId: data.user!.id,
-        weight: weight,
-        bodyFatPercentage: bodyFatPercentage
+        weight: parseInt(weight),
+        bodyFatPercentage: parseInt(bodyFatPercentage),
+        measuredAt: new Date(date),
       },
     });
 

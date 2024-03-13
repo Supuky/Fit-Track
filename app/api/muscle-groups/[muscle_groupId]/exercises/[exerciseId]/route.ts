@@ -18,12 +18,20 @@ export async function GET(
     const exercise = await prisma.exercises.findUnique({
       where: {
         id: parseInt(exerciseId),
-        userId: data.user!.id,
-        muscleGroupId: parseInt(muscle_groupId),
+        // userId: data.user!.id,
+        // muscleGroupId: parseInt(muscle_groupId),
+      },
+      select: {
+        name: true,
+        muscleGroups: {
+          select: {
+            name: true
+          }
+        },
       },
     });
 
-    if(exercise === undefined) return NextResponse.json({ message: "見つかりませんでした" }, { status: 404 });;
+    if(exercise === undefined) return NextResponse.json({ message: "見つかりませんでした" }, { status: 404 });
 
     return NextResponse.json({ exercise: exercise }, { status: 200 });
   } catch (error) {

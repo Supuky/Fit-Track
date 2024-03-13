@@ -20,6 +20,11 @@ export async function GET(
         muscleGroupId: parseInt(id),
         userId: data.user!.id,
       },
+      select: {
+        id: true,
+        muscleGroupId: true,
+        name: true,
+      }
     });
 
     return NextResponse.json({ exercises: exercises }, { status: 200 });
