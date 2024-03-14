@@ -18,6 +18,7 @@ export async function GET(
     const weights = await prisma.bodyMeasurements.findUnique({
       where: {
         id: parseInt(weightId),
+        userId: data.user!.id,
       },
     });
 

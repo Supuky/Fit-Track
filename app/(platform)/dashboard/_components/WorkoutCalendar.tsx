@@ -6,6 +6,7 @@ import Calendar, { OnArgs, TileArgs } from 'react-calendar';
 import './WorkoutCalendar.css';
 import { formatDate, isSameDay } from 'date-fns';
 import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
+import useApi  from '@/app/_hooks/useAPI';
 
 interface Props {
   value: Value;
@@ -17,33 +18,47 @@ const WorkoutCalendar: React.FC<Props> = ({
   value,
   onChange
 }) => {
-  const { token } = useSupabaseSession();
-  const [workoutDays, setWorkoutDays] = useState<{workoutedAt: Date}[]>([]);
   const [year, setYear] = useState(value?.getFullYear());
   const [month, setMonth] = useState(value?.getMonth());
+  const [workoutDays, setWorkoutDays] = useState<{workoutedAt: Date}[]>([]);
+  const { token } = useSupabaseSession();
+  const api = useApi();
+
+  // useEffect(() => {
+  //   if(!token) return;
+
+  //   const fetcher = async () => {
+  //     const response = await fetch(`/api/workouts/workoutedDays?year=${year}&month=${month}`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: token,
+  //       },
+  //     });
+      
+  //     const { workoutDays } = await response.json();
+
+  //     setWorkoutDays(workoutDays);
+  //   };
+
+  //   fetcher();
+  // }, [token, year, month]);
 
   useEffect(() => {
-    if(!token) return;
-
     const fetcher = async () => {
-      const response = await fetch(`/api/workouts/workoutedDays?year=${year}&month=${month}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      });
-      
-      const { workoutDays } = await response.json();
-
-      setWorkoutDays(workoutDays);
+      try {
+        const data = await api.get(`/api/workouts/workoutedDays?year=${year}&month=${month}`);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     fetcher();
-  }, [token, year, month]);
+  }, [year, month]);
 
   const showWorkoutDays = ({ date, view }: TileArgs) => {
     if(view === "month") {
-      for(let i = 0; i < workoutDays.length; i++) {
+      for(let i = 0; i < workoutDays?.length; i++) {
         const workoutDay = workoutDays[i].workoutedAt;
         if(isSameDay(date, workoutDay)) return "workout-day";
       };

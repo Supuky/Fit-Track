@@ -4,13 +4,14 @@
 import React, { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Plus, Trash2 } from 'lucide-react';
+import { WorkoutData } from '@/types/workout';
 
 interface Props {
   mode: "new" | "edit",
   muscle: string,
   exercise: string,
   exerciseId: string | string[],
-  onSubmit: (data: any) => Promise<void>
+  onSubmit: (data: WorkoutData) => Promise<void>
 };
 
 const Form: React.FC<Props> = ({

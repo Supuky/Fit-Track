@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Plus, Trash2 } from 'lucide-react';
-import { SetDetail } from "@/types/workout";
+import { SetDetail, WorkoutUpdateData } from "@/types/workout";
 
 const WorkoutDetailPage = () => {
   const router = useRouter();
@@ -31,9 +31,7 @@ const WorkoutDetailPage = () => {
     },
   });
 
-  const handleUpdateWorkoutsSubmit = async (data: any) => {
-    console.log(data);
-
+  const handleUpdateWorkoutsSubmit = async (data: WorkoutUpdateData) => {
     const response = await fetch(`/api/workouts/${workoutDetailId}/${exerciseId}`, {
       method: "PUT",
       headers: {
@@ -44,7 +42,12 @@ const WorkoutDetailPage = () => {
     });
 
     console.log(response);
-    alert("更新しました。");
+    if(response.status === 200) {
+      alert("更新しました。");
+      router.push("/dashboard");
+    } else {
+      alert("更新できませんでした。")
+    }
   };
 
   useEffect(() => {
@@ -136,7 +139,7 @@ const WorkoutDetailPage = () => {
 
     if(response.status === 200) {
       alert("削除しました。");
-      router.push("/weights");
+      router.push("/dashboard");
     } else {
       alert("削除に失敗しました。");
     };
@@ -144,11 +147,10 @@ const WorkoutDetailPage = () => {
 
   return(
     <>
-      {/* <Form /> */}
       <form 
       className="max-w-[600px] bg-base-white px-8 py-4 rounded-xl shadow-xl text-base-black  md:w-4/6"
       onSubmit={handleSubmit(handleUpdateWorkoutsSubmit)}
-    >
+      >
       <div className="mb-4 flex justify-between items-center">
         <div>
           <label htmlFor="muscle">部位</label>

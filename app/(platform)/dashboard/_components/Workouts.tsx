@@ -31,6 +31,7 @@ const Workouts: React.FC<Props> = ({
       });
       
       const { workouts } = await response.json();
+      console.log(workouts);
 
       setWorkouts(workouts);
     };
@@ -41,14 +42,10 @@ const Workouts: React.FC<Props> = ({
   return (
     <div className="mt-8">
       {
-        workouts.map((workout) => (
+        workouts?.map((workout) => (
           <Workout 
             key={workout.workoutDetailId}
-            exercise={workout.exercise}
-            exerciseId={workout.exerciseId}
-            muscleId={workout.muscleId} 
-            rm={workout.rm}
-            workoutDetailId={workout.workoutDetailId} 
+            workout={workout}
           />
         ))
       }

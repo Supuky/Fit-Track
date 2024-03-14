@@ -46,3 +46,12 @@ export type WorkoutData = {
   memo: string;
   date: string | null;
 };
+
+export type WorkoutUpdateData = {
+  exerciseId: string | string[];
+  workouts: {
+    weight: string;
+    reps: string;
+  }[];
+  memo: string;
+};
