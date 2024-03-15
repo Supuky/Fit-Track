@@ -1,6 +1,6 @@
 "use client"
 
-import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
+import useApi from "@/app/_hooks/useApi";
 import { Exercise, MuscleGroup } from "@/types/workout";
 import { LineChart } from "lucide-react";
 import Link from "next/link";
@@ -8,30 +8,27 @@ import { useEffect, useState } from "react";
 
 
 const RecordsPage = () => {
-  const { token } = useSupabaseSession();
   const [muscles, setMuscles] = useState<MuscleGroup[]>([]);
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const api = useApi();
 
   useEffect(() => {
-    if(!token) return;
-
     const fetcher = async() => {
-      const response = await fetch("/api/records", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      });
-
-      const { muscleGroups, exercises } = await response.json();
-
-      console.log(muscleGroups, exercises);
-      setMuscles(muscleGroups);
-      setExercises(exercises);
+      try {
+        const response = await api.get("/api/records");
+  
+        const { muscleGroups, exercises } = response;
+  
+        setMuscles(muscleGroups);
+        setExercises(exercises);
+      } catch (error) {
+        console.log(error);
+        alert("取得に失敗しました。");
+      };
     };
 
     fetcher();
-  }, [token]);
+  }, []);
 
   return(
     <>

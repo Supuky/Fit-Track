@@ -1,37 +1,29 @@
 "use client"
 
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
-import { Dumbbell } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { Dumbbell } from 'lucide-react';
 import { MuscleGroup } from '@/types/workout';
+import useApi from '@/app/_hooks/useApi';
 
 const MuscleGroupsPage = () => {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
-  const { token } = useSupabaseSession();
   const [muscleGroups, setMuscleGroups] = useState<MuscleGroup[]>([]);
-
+  const api = useApi();
 
   useEffect(() => {
-    if(!token) return;
-
     const fetcher = async () => {
-      const response = await fetch("/api/muscle-groups", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token!,
-        }
-      });
+      const response = await api.get("/api/muscle-groups");
 
-      const { muscleGroups } = await response.json();
+      const { muscleGroups } = response;
 
       setMuscleGroups(muscleGroups);
     };
 
     fetcher();
-  }, [token]);
+  }, [])
 
   return (
     <div className="flex justify-center items-center gap-8 flex-wrap max-w-[600px]">

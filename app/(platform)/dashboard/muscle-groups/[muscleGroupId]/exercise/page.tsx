@@ -1,37 +1,36 @@
 "use client"
 
-import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
 import Link from "next/link";
 import { Dumbbell, Plus } from "lucide-react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Exercise } from "@/types/workout";
+import useApi from "@/app/_hooks/useApi";
 
 const ExercisesPage = () => {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
-  const { token } = useSupabaseSession();
   const { muscleGroupId } = useParams();
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const api = useApi();
 
   useEffect(() => {
-    if(!token) return;
 
     const fetcher = async () => {
-      const response = await fetch(`/api/muscle-groups/${muscleGroupId}/exercises`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token!,
-        },
-      });
-
-      const { exercises } = await response.json();
-
-      setExercises(exercises);
+      try {
+        const response = await api.get(`/api/muscle-groups/${muscleGroupId}/exercises`);
+  
+        const { exercises } = response;
+  
+        setExercises(exercises);
+      } catch (error) {
+        console.log(error);
+        alert("取得に失敗しました。");
+      };
     };
 
     fetcher();
-  }, [muscleGroupId, token]);
+  }, [muscleGroupId]);
 
   return (
     <div className="max-w-[600px]">

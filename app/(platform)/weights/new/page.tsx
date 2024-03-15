@@ -1,36 +1,28 @@
 "use client"
 
 import { useState } from "react";
-import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
 import Form from "../_components/Form";
 import { useRouter } from "next/navigation";
+import useApi from "@/app/_hooks/useApi";
 
 const WeightsNewPage = () => {
-  const router = useRouter()
-  const { token } = useSupabaseSession();
+  const router = useRouter();
   const [weight, setWeight] = useState("");
   const [bodyFatPercentage, setBodyFatPercentage] = useState("");
   const [date, setDate] = useState("");
+  const api = useApi();
 
   const handleCreateWeightSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if(!token) return;
+    try {
+      const response = await api.post(`/api/weights`, { weight: weight, bodyFatPercentage: bodyFatPercentage, date: date });
 
-    const response = await fetch(`/api/weights`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({ weight: weight, bodyFatPercentage: bodyFatPercentage, date: date }),
-    });
-
-    if(response.status === 200) {
       alert("作成しました。");
       router.push("/weights");
-    } else {
-      alert("新規作成できませんでした。")
+    } catch (error) {
+      console.log(error);
+      alert("新規作成できませんでした。");
     };
   };
 

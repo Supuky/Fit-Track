@@ -2,57 +2,46 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
 import Form from "../_components/Form";
+import useApi from "@/app/_hooks/useApi";
 
 const ExerciseDetailPage = () => {
   const router = useRouter();
-  const { token } = useSupabaseSession();
   const { muscleGroupId, exerciseId } = useParams();
   const [exercise, setExercise] = useState("");
   const [muscle, setMuscle] = useState("");
+  const api = useApi();
 
   const handleUpdateExerciseSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    try {
+      const response = await api.put(`/api/muscle-groups/${muscleGroupId}/exercises/${exerciseId}`,{ name: exercise });
 
-    if(!token) return;
-
-    const response = await fetch(`/api/muscle-groups/${muscleGroupId}/exercises/${exerciseId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({ name: exercise }),
-    });
-
-    if(response.status === 200) {
       alert("更新しました。");
-      router.back();
-    } else {
-      alert("保存に失敗しました。");
+      router.push("/dashboard");
+    } catch (error) {
+      console.log(error);
+      alert("更新に失敗しました。");
     };
   };
 
   useEffect(() => {
-    if(!token) return;
-
     const fetcher = async() => {
-      const response = await fetch(`/api/muscle-groups/${muscleGroupId}/exercises/${exerciseId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token!,
-        },
-      });
+      try {
+        const response = await api.get(`/api/muscle-groups/${muscleGroupId}/exercises/${exerciseId}`);
 
-      const { exercise } = await response.json();
-      const { muscleGroups } = exercise;
-      setExercise(exercise.name);
-      setMuscle(muscleGroups.name);
+        const { exercise } =  response;
+        const { muscleGroups } = exercise;
+        setExercise(exercise.name);
+        setMuscle(muscleGroups.name);
+      } catch (error) {
+        console.log(error);
+        alert("取得に失敗しました。");
+      }
     };
 
     fetcher();
-  }, [muscleGroupId, exerciseId, token]);
+  }, [muscleGroupId, exerciseId]);
 
   return (
     <Form 

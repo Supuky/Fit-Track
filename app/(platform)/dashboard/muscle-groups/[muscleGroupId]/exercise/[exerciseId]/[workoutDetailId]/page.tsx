@@ -1,20 +1,19 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
 import { useParams, useRouter } from "next/navigation";
-
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Plus, Trash2 } from 'lucide-react';
 import { SetDetail, WorkoutUpdateData } from "@/types/workout";
+import useApi from "@/app/_hooks/useApi";
 
 const WorkoutDetailPage = () => {
   const router = useRouter();
-  const { token } = useSupabaseSession();
   const { muscleGroupId, exerciseId, workoutDetailId } = useParams();
   const [exercise, setExercise] = useState("");
   const [muscle, setMuscle] = useState("");
   const [Details, setDetails] = useState<SetDetail[]>([]);
+  const api = useApi();
 
   // input をいくつ追加したカウント
   const [count, setCount] = useState(0);
@@ -32,56 +31,35 @@ const WorkoutDetailPage = () => {
   });
 
   const handleUpdateWorkoutsSubmit = async (data: WorkoutUpdateData) => {
-    const response = await fetch(`/api/workouts/${workoutDetailId}/${exerciseId}`, {
-      method: "PUT",
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token!,
-      },
-      body: JSON.stringify(data),
-    });
-
-    console.log(response);
-    if(response.status === 200) {
+    try {
+      const response = await api.put(`/api/workouts/${workoutDetailId}/${exerciseId}`, data);
+      
       alert("更新しました。");
       router.push("/dashboard");
-    } else {
-      alert("更新できませんでした。")
-    }
+    } catch (error) {
+      console.log(error);
+      alert("更新に失敗しました。");
+    };
   };
 
   useEffect(() => {
-    if(!token) return;
-
     const fetcher = async() => {
-      const response = await fetch(`/api/muscle-groups/${muscleGroupId}/exercises/${exerciseId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token!,
-        },
-      });
+      const response = await api.get(`/api/muscle-groups/${muscleGroupId}/exercises/${exerciseId}`);
 
-      const { exercise } = await response.json();
+      const { exercise } = response;
       const { muscleGroups } = exercise;
       setExercise(exercise.name);
       setMuscle(muscleGroups.name);
     };
 
     fetcher();
-  }, [muscleGroupId, exerciseId, token]);
+  }, [muscleGroupId, exerciseId]);
 
   useEffect(() => {
-    if(!token) return;
-
     const fetcher = async() => {
-      const response = await fetch(`/api/workouts/${workoutDetailId}/${exerciseId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token!,
-      },
-      });
+      const response = await api.get(`/api/workouts/${workoutDetailId}/${exerciseId}`);
 
-      const { workoutDetails } = await response.json();
+      const { workoutDetails } = response;
       const { setDetails: setDetailsData } = workoutDetails;
       setDetails(setDetailsData);
 
@@ -100,13 +78,12 @@ const WorkoutDetailPage = () => {
     };
 
     fetcher();
-  }, [token, workoutDetailId, exerciseId, setValue, reset]);
+  }, [workoutDetailId, exerciseId]);
 
   // Detailsが更新されたときにsetCountを呼び出す
   useEffect(() => {
     setCount(Details.length);
   }, [Details]);
-
 
   // input を動的に増減させるための設定
   const { fields, append, remove } = useFieldArray({
@@ -125,22 +102,16 @@ const WorkoutDetailPage = () => {
 
   const handleDeleteWorkoutsSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    if(!token) return;
 
     if (!confirm('削除しますか？')) return;
 
-    const response = await fetch(`/api/workouts/${workoutDetailId}/${exerciseId}`, {
-      method: "DELETE",
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token!,
-      },
-    });
-
-    if(response.status === 200) {
+    try {
+      const response = await api.del(`/api/workouts/${workoutDetailId}/${exerciseId}`);
+      
       alert("削除しました。");
       router.push("/dashboard");
-    } else {
+    } catch (error) {
+      console.log(error);
       alert("削除に失敗しました。");
     };
   };

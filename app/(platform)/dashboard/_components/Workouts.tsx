@@ -1,43 +1,44 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { Value } from '@/types/calender';
-import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
 import { format } from 'date-fns';
 import Workout from './Workout';
+import { Value } from '@/types/calender';
 import { WorkoutExercise } from '@/types/workout';
+import useApi from '@/app/_hooks/useApi';
 
 interface Props {
   value: Value;
+};
+
+interface ApiResponse {
+  workouts: WorkoutExercise[]
 };
 
 const Workouts: React.FC<Props> = ({
   value
 }) => {
   const [workouts, setWorkouts] = useState<WorkoutExercise[]>([]);
-  const { token } = useSupabaseSession();
-  
-  useEffect(() => {
-    if(!token || !value) return;
+  const api = useApi();
 
+  useEffect(() => {
+    if(!value) return;
+    
     const dateFormat = format(value, "yyyy-MM-dd");
     
     const fetcher = async () => {
-      const response = await fetch(`/api/workouts?date=${dateFormat}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      });
-      
-      const { workouts } = await response.json();
-      console.log(workouts);
-
-      setWorkouts(workouts);
+      try {
+        const response: ApiResponse = await api.get(`/api/workouts?date=${dateFormat}`);
+        const { workouts } = response;
+        if(workouts) setWorkouts(workouts);
+      } catch (error) {
+        console.log(error);
+        alert("取得に失敗しました。");
+      };
     };
 
     fetcher();
-  }, [value, token]);
+  }, [value]);
 
   return (
     <div className="mt-8">

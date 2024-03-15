@@ -1,17 +1,24 @@
 "use client"
 
-import { Value } from '@/types/calender';
 import React, { useEffect, useState } from 'react';
 import Calendar, { OnArgs, TileArgs } from 'react-calendar';
-import './WorkoutCalendar.css';
 import { formatDate, isSameDay } from 'date-fns';
-import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
-import useApi  from '@/app/_hooks/useAPI';
+import useApi  from '@/app/_hooks/useApi';
+import { Value } from '@/types/calender';
+import './WorkoutCalendar.css';
 
 interface Props {
   value: Value;
   onChange:  (value: any, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   // onChange:  (value: Value, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+};
+
+interface WorkoutDay {
+  workoutedAt: Date
+};
+
+interface ApiResponse {
+  workoutDays: WorkoutDay[];
 };
 
 const WorkoutCalendar: React.FC<Props> = ({
@@ -20,39 +27,23 @@ const WorkoutCalendar: React.FC<Props> = ({
 }) => {
   const [year, setYear] = useState(value?.getFullYear());
   const [month, setMonth] = useState(value?.getMonth());
-  const [workoutDays, setWorkoutDays] = useState<{workoutedAt: Date}[]>([]);
-  const { token } = useSupabaseSession();
+  const [workoutDays, setWorkoutDays] = useState<WorkoutDay[]>([]);
   const api = useApi();
-
-  // useEffect(() => {
-  //   if(!token) return;
-
-  //   const fetcher = async () => {
-  //     const response = await fetch(`/api/workouts/workoutedDays?year=${year}&month=${month}`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: token,
-  //       },
-  //     });
-      
-  //     const { workoutDays } = await response.json();
-
-  //     setWorkoutDays(workoutDays);
-  //   };
-
-  //   fetcher();
-  // }, [token, year, month]);
 
   useEffect(() => {
     const fetcher = async () => {
       try {
-        const data = await api.get(`/api/workouts/workoutedDays?year=${year}&month=${month}`);
-        console.log(data);
+        const response: ApiResponse = await api.get(`/api/workouts/workoutedDays?year=${year}&month=${month}`);
+  
+        const { workoutDays } = response;
+  
+        setWorkoutDays(workoutDays);
       } catch (error) {
         console.log(error);
+        alert("取得に失敗しました。");
       }
     };
-
+    
     fetcher();
   }, [year, month]);
 

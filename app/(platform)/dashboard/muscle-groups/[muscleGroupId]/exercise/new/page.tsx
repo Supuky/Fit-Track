@@ -2,54 +2,45 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
 import Form from "../_components/Form";
+import useApi from "@/app/_hooks/useApi";
 
 const ExerciseNewPage = () => {
   const router = useRouter();
-  const { token } = useSupabaseSession();
   const { muscleGroupId } = useParams();
   const [exercise, setExercise] = useState("");
   const [muscle, setMuscle] = useState("");
+  const api = useApi();
 
   const handleCreateExerciseSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    try {
+      const response = await api.post(`/api/muscle-groups/${muscleGroupId}/exercises`, { name: exercise });
 
-    if(!token) return;
-
-    const response = await fetch(`/api/muscle-groups/${muscleGroupId}/exercises`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify({ name: exercise }),
-    });
-    
-    if(response.status === 200) {
       alert("作成しました。");
       router.back();
-    } else {
-      alert("保存に失敗しました。");
+    } catch (error) {
+      console.log(error);
+      alert("新規作成できませんでした。");
     };
   };
 
   useEffect(() => {
-    if(!token) return;
     const fetcher = async() => {
-      const response = await fetch(`/api/muscle-groups/${muscleGroupId}/`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token!,
-        },
-      });
-
-      const { muscleGroups } = await response.json();
-      setMuscle(muscleGroups.name);
+      try {
+        const response = await api.get(`/api/muscle-groups/${muscleGroupId}/`);
+  
+        const { muscleGroups } = response;
+  
+        setMuscle(muscleGroups.name);
+      } catch (error) {
+        console.log(error);
+        alert("取得に失敗しました。");
+      };
     };
 
     fetcher();
-  }, [muscleGroupId, token]);
+  }, [muscleGroupId]);
 
   return (
     <>

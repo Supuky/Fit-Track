@@ -1,36 +1,33 @@
 import { useEffect, useState } from "react";
 import { WeightType } from "@/types/workout";
-import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
 import { format, parseISO } from "date-fns";
+import useApi from "./useApi";
 
 export const useWeights = () => {
-  const { token } = useSupabaseSession();
   const [weights, setWeights] = useState<WeightType[]>([]);
+  const api = useApi();
 
   useEffect(() => {
-    if(!token) return;
-
     const fetcher = async() => {
-      const response = await fetch("/api/weights", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      });
-
-      const { weights } = await response.json();
-      // console.log( weights );
-
-      weights.forEach((weight: WeightType) => {
-        let date = parseISO(weight.measuredAt);
-        weight.measuredAt = format(date, "M/d");
-      });
-      
-      setWeights(weights);
+      try {
+        const response = await api.get("/api/weights");
+  
+        const { weights } = response;
+  
+        weights.forEach((weight: WeightType) => {
+          let date = parseISO(weight.measuredAt);
+          weight.measuredAt = format(date, "M/d");
+        });
+        
+        setWeights(weights);
+      } catch (error) {
+        console.log(error);
+        alert("取得に失敗しました。")
+      };
     };
 
     fetcher();
-  }, [token]);
+  }, []);
 
   return { weights };
 };
