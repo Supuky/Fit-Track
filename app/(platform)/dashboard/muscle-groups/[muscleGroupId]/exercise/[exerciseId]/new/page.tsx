@@ -4,8 +4,12 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
 import { Plus, Trash2 } from "lucide-react";
-import { WorkoutData } from "@/types/workout";
+import { Exercise, WorkoutData } from "@/types/workout";
 import useApi from "@/app/_hooks/useApi";
+
+interface ApiResponse {
+  exercise: Exercise,
+};
 
 const WorkoutRecordPage = () => {
   const router = useRouter();
@@ -55,7 +59,7 @@ const WorkoutRecordPage = () => {
 
   const handleCreateWorkoutsSubmit = async (data: WorkoutData) => {
     try {
-      const response = await api.post(`/api/workouts`, data);
+      await api.post(`/api/workouts`, data);
 
       alert("保存しました。");
       router.push("/dashboard");
@@ -68,12 +72,14 @@ const WorkoutRecordPage = () => {
   useEffect(() => {
     const fetcher = async () => {
       try {
-        const response = await api.get(`/api/muscle-groups/${muscleGroupId}/exercises/${exerciseId}`);
-  
-        const { exercise } = response;
-        const { muscleGroups } = exercise;
-        setExercise(exercise.name);
-        setMuscle(muscleGroups.name);
+        const response = await api.get<ApiResponse>(`/api/muscle-groups/${muscleGroupId}/exercises/${exerciseId}`);
+
+        if(response) {
+          const { exercise } = response;
+          const { muscleGroups } = exercise;
+          setExercise(exercise.name);
+          setMuscle(muscleGroups.name);
+        };
       } catch (error) {
         console.log(error);
         alert("取得に失敗しました。");
@@ -81,6 +87,8 @@ const WorkoutRecordPage = () => {
     };
 
     fetcher();
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [muscleGroupId, exerciseId]);
 
   return (

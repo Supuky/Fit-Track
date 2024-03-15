@@ -4,8 +4,16 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Plus, Trash2 } from 'lucide-react';
-import { SetDetail, WorkoutUpdateData } from "@/types/workout";
+import { Exercise, SetDetail, Workout, WorkoutUpdateData } from "@/types/workout";
 import useApi from "@/app/_hooks/useApi";
+
+interface ApiResponseExercise {
+  exercise: Exercise,
+};
+
+interface ApiResponseSetDetail {
+  workoutDetails: Workout,
+};
 
 const WorkoutDetailPage = () => {
   const router = useRouter();
@@ -44,40 +52,52 @@ const WorkoutDetailPage = () => {
 
   useEffect(() => {
     const fetcher = async() => {
-      const response = await api.get(`/api/muscle-groups/${muscleGroupId}/exercises/${exerciseId}`);
+      const response = await api.get<ApiResponseExercise>(`/api/muscle-groups/${muscleGroupId}/exercises/${exerciseId}`);
 
-      const { exercise } = response;
-      const { muscleGroups } = exercise;
-      setExercise(exercise.name);
-      setMuscle(muscleGroups.name);
+      if(response) {
+        const { exercise } = response;
+        const { muscleGroups } = exercise;
+        setExercise(exercise.name);
+        setMuscle(muscleGroups.name);
+      };
     };
 
     fetcher();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [muscleGroupId, exerciseId]);
 
   useEffect(() => {
     const fetcher = async() => {
-      const response = await api.get(`/api/workouts/${workoutDetailId}/${exerciseId}`);
+      const response = await api.get<ApiResponseSetDetail>(`/api/workouts/${workoutDetailId}/${exerciseId}`);
 
-      const { workoutDetails } = response;
-      const { setDetails: setDetailsData } = workoutDetails;
-      setDetails(setDetailsData);
-
-      // フェッチしたデータをフォームに設定
-      for (const [index, detail] of setDetailsData.entries()) {
-        setValue(`workouts[${index}].reps` as `workouts.${number}.reps`, detail.reps);
-        setValue(`workouts[${index}].weight` as `workouts.${number}.weight`, detail.weight);
-      }
-
-      // フェッチしたデータを元にフォームの初期値をリセット
-      reset({
-        exerciseId: exerciseId,
-        workouts: setDetailsData,
-        memo: workoutDetails.memo,
-      });
+      if(response) {
+        const { workoutDetails } = response;
+        console.log(workoutDetails);
+        const { setDetails: setDetailsData } = workoutDetails;
+        setDetails(setDetailsData);
+  
+        // フェッチしたデータをフォームに設定
+        for (const [index, detail] of setDetailsData.entries()) {
+          setValue(`workouts[${index}].reps` as `workouts.${number}.reps`, detail.reps.toString());
+          setValue(`workouts[${index}].weight` as `workouts.${number}.weight`, detail.weight.toString());
+        }
+  
+        // フェッチしたデータを元にフォームの初期値をリセット
+        reset({
+          exerciseId: exerciseId,
+          workouts: setDetailsData.map(detail => ({
+            ...detail,
+            reps: detail.reps.toString(),
+            weight: detail.weight.toString(),
+          })),
+          memo: workoutDetails.memo,
+        });
+      };
     };
 
     fetcher();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workoutDetailId, exerciseId]);
 
   // Detailsが更新されたときにsetCountを呼び出す
@@ -106,7 +126,7 @@ const WorkoutDetailPage = () => {
     if (!confirm('削除しますか？')) return;
 
     try {
-      const response = await api.del(`/api/workouts/${workoutDetailId}/${exerciseId}`);
+      await api.del(`/api/workouts/${workoutDetailId}/${exerciseId}`);
       
       alert("削除しました。");
       router.push("/dashboard");

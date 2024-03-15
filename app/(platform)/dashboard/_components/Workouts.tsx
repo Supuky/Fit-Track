@@ -28,9 +28,11 @@ const Workouts: React.FC<Props> = ({
     
     const fetcher = async () => {
       try {
-        const response: ApiResponse = await api.get(`/api/workouts?date=${dateFormat}`);
-        const { workouts } = response;
-        if(workouts) setWorkouts(workouts);
+        const response = await api.get<ApiResponse>(`/api/workouts?date=${dateFormat}`);
+        if(response) {
+          const { workouts } = response;
+          setWorkouts(workouts);
+        };
       } catch (error) {
         console.log(error);
         alert("取得に失敗しました。");
@@ -38,6 +40,8 @@ const Workouts: React.FC<Props> = ({
     };
 
     fetcher();
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (

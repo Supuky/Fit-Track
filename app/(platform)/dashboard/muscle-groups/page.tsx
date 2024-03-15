@@ -7,6 +7,10 @@ import { Dumbbell } from 'lucide-react';
 import { MuscleGroup } from '@/types/workout';
 import useApi from '@/app/_hooks/useApi';
 
+interface ApiResponse {
+  muscleGroups: MuscleGroup[],
+};
+
 const MuscleGroupsPage = () => {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
@@ -15,15 +19,17 @@ const MuscleGroupsPage = () => {
 
   useEffect(() => {
     const fetcher = async () => {
-      const response = await api.get("/api/muscle-groups");
+      const response = await api.get<ApiResponse>("/api/muscle-groups");
 
-      const { muscleGroups } = response;
-
-      setMuscleGroups(muscleGroups);
+      if(response) {
+        const { muscleGroups } = response;
+        setMuscleGroups(muscleGroups);
+      }
     };
 
     fetcher();
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex justify-center items-center gap-8 flex-wrap max-w-[600px]">

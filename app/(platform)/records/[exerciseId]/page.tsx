@@ -11,6 +11,9 @@ import "react-tabs/style/react-tabs.css";
 import Tab from "./_components/RecordTab";
 import useApi from "@/app/_hooks/useApi";
 
+interface ApiResponse {
+  records: Record[],
+};
 
 const RecordPage = () => {
   const { exerciseId } = useParams();
@@ -25,16 +28,18 @@ const RecordPage = () => {
   useEffect(() => {
     const fetcher = async () => {
       try {
-        const response = await api.get(`/api/records/${exerciseId}/?tabIndex=${selectedTab}`);
+        const response = await api.get<ApiResponse>(`/api/records/${exerciseId}/?tabIndex=${selectedTab}`);
   
-        const { records } = response;
-  
-        records.forEach((record: Record) => {
-          let date = parseISO(record.workoutedAt);
-          record.workoutedAt = format(date, "M/d");
-        });
-  
-        setRecords(records);
+        if(response) {
+          const { records } = response;
+    
+          records.forEach((record: Record) => {
+            let date = parseISO(record.workoutedAt);
+            record.workoutedAt = format(date, "M/d");
+          });
+    
+          setRecords(records);
+        };
       } catch (error) {
         console.log(error);
         alert("取得に失敗しました。")
@@ -42,6 +47,7 @@ const RecordPage = () => {
     };
 
     fetcher();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exerciseId, selectedTab]);
 
   return (

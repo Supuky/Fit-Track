@@ -19,6 +19,11 @@ export type Exercise = {
   muscleGroups: MuscleGroup
 };
 
+export type Workout = {
+  memo: string,
+  setDetails: SetDetail[],
+};
+
 export type SetDetail = {
   reps: number,
   weight: number
@@ -35,6 +40,7 @@ export type WeightType = {
   id: number,
   weight: number,
   measuredAt: string,
+  bodyFatPercentage: number,
 };
 
 export type WorkoutData = {

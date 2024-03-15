@@ -5,6 +5,11 @@ import Form from "../_components/Form";
 import { useParams, useRouter } from "next/navigation";
 import { format } from "date-fns";
 import useApi from "@/app/_hooks/useApi";
+import { WeightType } from "@/types/workout";
+
+interface ApiResponse {
+  weights: WeightType,
+};
 
 const WeightPage = () => {
   const router = useRouter();
@@ -17,21 +22,24 @@ const WeightPage = () => {
   useEffect(() => {
     const fetcher = async() => {
       try {
-        const response = await api.get(`/api/weights/${weightId}`);
+        const response = await api.get<ApiResponse>(`/api/weights/${weightId}`);
   
-        const { weights }  = response;
-        const { weight, bodyFatPercentage, measuredAt } = weights;
-  
-        setWeight(weight);
-        setBodyFatPercentage(bodyFatPercentage);
-        setDate(format(measuredAt, "yyyy-MM-dd"));
+        if(response) {
+          const { weights }  = response;
+          const { weight, bodyFatPercentage, measuredAt } = weights;
+    
+          setWeight(weight.toString());
+          setBodyFatPercentage(bodyFatPercentage.toString());
+          setDate(format(measuredAt, "yyyy-MM-dd"));
+        };
       } catch (error) {
         console.log(error);
-        alert("取得に失敗しました。")
+        alert("取得に失敗しました。");
       };
     };
 
     fetcher();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [weightId]);
 
   const handleUpdateWeightSubmit = async (event: React.FormEvent) => {
@@ -54,7 +62,7 @@ const WeightPage = () => {
     if (!confirm('削除しますか？')) return;
 
     try {
-      const response = await api.del(`/api/weights/${weightId}`);
+      await api.del(`/api/weights/${weightId}`);
       
       alert("削除しました。");
       router.push("/weights");

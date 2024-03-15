@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Form from "../_components/Form";
 import useApi from "@/app/_hooks/useApi";
+import { MuscleGroup } from "@/types/workout";
+
+interface ApiResponse {
+  muscleGroups: MuscleGroup,
+};
 
 const ExerciseNewPage = () => {
   const router = useRouter();
@@ -15,7 +20,7 @@ const ExerciseNewPage = () => {
   const handleCreateExerciseSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await api.post(`/api/muscle-groups/${muscleGroupId}/exercises`, { name: exercise });
+      await api.post(`/api/muscle-groups/${muscleGroupId}/exercises`, { name: exercise });
 
       alert("作成しました。");
       router.back();
@@ -28,11 +33,13 @@ const ExerciseNewPage = () => {
   useEffect(() => {
     const fetcher = async() => {
       try {
-        const response = await api.get(`/api/muscle-groups/${muscleGroupId}/`);
+        const response = await api.get<ApiResponse>(`/api/muscle-groups/${muscleGroupId}/`);
   
-        const { muscleGroups } = response;
-  
-        setMuscle(muscleGroups.name);
+        if(response) {
+          const { muscleGroups } = response;
+    
+          setMuscle(muscleGroups.name);
+        };
       } catch (error) {
         console.log(error);
         alert("取得に失敗しました。");
@@ -40,6 +47,7 @@ const ExerciseNewPage = () => {
     };
 
     fetcher();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [muscleGroupId]);
 
   return (

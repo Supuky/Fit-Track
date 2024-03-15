@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Form from "../_components/Form";
 import useApi from "@/app/_hooks/useApi";
+import { Exercise } from "@/types/workout";
+
+interface ApiResponse {
+  exercise: Exercise,
+};
 
 const ExerciseDetailPage = () => {
   const router = useRouter();
@@ -28,12 +33,14 @@ const ExerciseDetailPage = () => {
   useEffect(() => {
     const fetcher = async() => {
       try {
-        const response = await api.get(`/api/muscle-groups/${muscleGroupId}/exercises/${exerciseId}`);
+        const response = await api.get<ApiResponse>(`/api/muscle-groups/${muscleGroupId}/exercises/${exerciseId}`);
 
-        const { exercise } =  response;
-        const { muscleGroups } = exercise;
-        setExercise(exercise.name);
-        setMuscle(muscleGroups.name);
+        if(response) {
+          const { exercise } =  response;
+          const { muscleGroups } = exercise;
+          setExercise(exercise.name);
+          setMuscle(muscleGroups.name);
+        };
       } catch (error) {
         console.log(error);
         alert("取得に失敗しました。");
@@ -41,6 +48,8 @@ const ExerciseDetailPage = () => {
     };
 
     fetcher();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [muscleGroupId, exerciseId]);
 
   return (

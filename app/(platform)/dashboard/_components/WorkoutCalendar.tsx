@@ -33,11 +33,12 @@ const WorkoutCalendar: React.FC<Props> = ({
   useEffect(() => {
     const fetcher = async () => {
       try {
-        const response: ApiResponse = await api.get(`/api/workouts/workoutedDays?year=${year}&month=${month}`);
+        const response = await api.get<ApiResponse>(`/api/workouts/workoutedDays?year=${year}&month=${month}`);
   
-        const { workoutDays } = response;
-  
-        setWorkoutDays(workoutDays);
+        if(response) {
+          const { workoutDays } = response;
+          setWorkoutDays(workoutDays);
+        }
       } catch (error) {
         console.log(error);
         alert("取得に失敗しました。");
@@ -45,6 +46,8 @@ const WorkoutCalendar: React.FC<Props> = ({
     };
     
     fetcher();
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [year, month]);
 
   const showWorkoutDays = ({ date, view }: TileArgs) => {

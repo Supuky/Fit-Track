@@ -6,6 +6,10 @@ import { LineChart } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+interface ApiResponse {
+  muscleGroups: MuscleGroup[],
+  exercises: Exercise[]
+};
 
 const RecordsPage = () => {
   const [muscles, setMuscles] = useState<MuscleGroup[]>([]);
@@ -15,12 +19,14 @@ const RecordsPage = () => {
   useEffect(() => {
     const fetcher = async() => {
       try {
-        const response = await api.get("/api/records");
+        const response = await api.get<ApiResponse>("/api/records");
   
-        const { muscleGroups, exercises } = response;
-  
-        setMuscles(muscleGroups);
-        setExercises(exercises);
+        if(response) {
+          const { muscleGroups, exercises } = response;
+    
+          setMuscles(muscleGroups);
+          setExercises(exercises);
+        };
       } catch (error) {
         console.log(error);
         alert("取得に失敗しました。");
@@ -28,6 +34,7 @@ const RecordsPage = () => {
     };
 
     fetcher();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return(

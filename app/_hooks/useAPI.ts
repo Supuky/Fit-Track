@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { supabase } from "@/utils/supabaseClient";
 
 const useApi = () => {
@@ -15,13 +14,13 @@ const useApi = () => {
         throw new Error("データの取得に失敗しました。");
       };
 
-      const data = await response.json();
+      const data: ResponseType = await response.json();
       console.log(data);
 
       return data;
     } catch (error) {
       if(error instanceof Error) {
-        throw error; 
+        throw error;
       };
     };
   };
@@ -39,7 +38,7 @@ const useApi = () => {
 
       if(!response.ok) throw new Error("保存に失敗しました。");
 
-      const data = await response.json();
+      const data: ResponseType = await response.json();
       console.log(data);
       
       return data;
@@ -61,7 +60,7 @@ const useApi = () => {
 
       if(!response.ok) throw new Error("保存に失敗しました。");
 
-      const data = await response.json();
+      const data: ResponseType = await response.json();
       console.log(data);
       
       return data;

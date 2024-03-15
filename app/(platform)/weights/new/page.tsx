@@ -16,7 +16,7 @@ const WeightsNewPage = () => {
     event.preventDefault();
 
     try {
-      const response = await api.post(`/api/weights`, { weight: weight, bodyFatPercentage: bodyFatPercentage, date: date });
+      await api.post(`/api/weights`, { weight: weight, bodyFatPercentage: bodyFatPercentage, date: date });
 
       alert("作成しました。");
       router.push("/weights");

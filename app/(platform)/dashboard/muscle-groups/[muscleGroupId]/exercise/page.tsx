@@ -7,6 +7,10 @@ import { useEffect, useState } from "react";
 import { Exercise } from "@/types/workout";
 import useApi from "@/app/_hooks/useApi";
 
+interface ApiResponse {
+  exercises: Exercise[],
+};
+
 const ExercisesPage = () => {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
@@ -18,11 +22,13 @@ const ExercisesPage = () => {
 
     const fetcher = async () => {
       try {
-        const response = await api.get(`/api/muscle-groups/${muscleGroupId}/exercises`);
+        const response = await api.get<ApiResponse>(`/api/muscle-groups/${muscleGroupId}/exercises`);
   
-        const { exercises } = response;
-  
-        setExercises(exercises);
+        if(response) {
+          const { exercises } = response;
+    
+          setExercises(exercises);
+        };
       } catch (error) {
         console.log(error);
         alert("取得に失敗しました。");
@@ -30,6 +36,8 @@ const ExercisesPage = () => {
     };
 
     fetcher();
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [muscleGroupId]);
 
   return (
