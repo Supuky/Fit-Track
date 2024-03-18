@@ -34,7 +34,7 @@ const MuscleGroupsPage = () => {
   return (
     <div className="flex justify-center items-center gap-8 flex-wrap max-w-[600px] mt-10">
       {
-        muscleGroups.map(muscle => (
+        muscleGroups?.map(muscle => (
           <Link 
             key={muscle.id}
             href={`/dashboard/muscle-groups/${muscle.id}/exercise?date=${date}`}
