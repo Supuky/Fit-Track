@@ -1,4 +1,4 @@
-const WorkoutLayout = ({
+const RecordLayout = ({
   children
 }: {
   children: React.ReactNode
@@ -6,11 +6,11 @@ const WorkoutLayout = ({
 
   return (
     <>
-      <div className="flex justify-center items-center">
+      <div className="h-svh">
         {children}
       </div>
     </>
   );
 };
 
-export default WorkoutLayout;
+export default RecordLayout;

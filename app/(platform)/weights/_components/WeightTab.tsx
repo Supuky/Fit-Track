@@ -20,7 +20,7 @@ const WeightTab: React.FC = () => {
       <TabPanel className="flex flex-col justify-center items-center">
         <Weights weights={weights}/>
       </TabPanel>
-      <TabPanel className="h-svh">
+      <TabPanel>
         <Chart weights={weights}/>
       </TabPanel>
     </Tabs>

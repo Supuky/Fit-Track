@@ -48,16 +48,16 @@ const ExercisesPage = () => {
             key={exercise.id}
             // href={`/dashboard/muscle-groups/${muscleGroupId}/exercise/${exercise.id}`}
             href={`/dashboard/muscle-groups/${muscleGroupId}/exercise/${exercise.id}/new?date=${date}`}
-            className="w-72 py-4 mb-8 flex items-center justify-center gap-4 bg-white rounded-xl shadow-xl text-base-black hover:bg-primary hover:text-base-white md:w-96"
+            className="w-72 py-4 mt-10 mb-8 flex items-center justify-center gap-4 bg-white rounded-xl shadow-xl text-base-black/90 md:w-96 hover:opacity-80"
           >
-            <Dumbbell />
+            <Dumbbell size={30} className="rotate-[135deg] text-primary"/>
             {exercise.name}
           </Link>
         ))
       }
       <Link 
         href={`/dashboard/muscle-groups/${muscleGroupId}/exercise/new`}
-        className="w-72 py-4 flex flex-col items-center gap-2 bg-white rounded-xl shadow-xl text-base-black hover:bg-primary hover:text-base-white md:w-96"
+        className="w-72 py-4 flex flex-col items-center gap-2 rounded-xl shadow-x bg-primary text-base-white md:w-96 hover:opacity-80"
       >
         <Plus />
       </Link>

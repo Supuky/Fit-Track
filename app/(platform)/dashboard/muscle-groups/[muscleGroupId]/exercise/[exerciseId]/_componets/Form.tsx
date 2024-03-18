@@ -60,7 +60,7 @@ const Form: React.FC<Props> = ({
 
   return (
     <form 
-      className="max-w-[600px] bg-base-white p-8 rounded-xl shadow-xl text-base-black"
+      className="max-w-[600px] bg-base-white p-8 mt-10 rounded-xl shadow-xl text-base-black"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="mb-4">

@@ -19,11 +19,13 @@ const Weight: React.FC<Props> = ({
     <Link
       href={`/weights/${id}`}
       className="flex justify-between items-center px-8 py-4 mt-4 rounded-xl shadow-xl max-w-[600px] m-auto bg-base-white
-      text-base-black"
+      text-base-black/90 hover:opacity-80"
     >
-      <PersonStanding className="text-primary"/>
-      <p>{weight}kg</p>
-      <p>{recordedAt}</p>
+      <div>
+      <PersonStanding size={30} className="text-primary"/>
+      <p className="">{weight}kg</p>
+      </div>
+      <p className="text-sm text-base-middle">{recordedAt}</p>
     </Link>
   )
 }

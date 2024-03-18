@@ -15,7 +15,7 @@ const PlatformLayout = ({
       {/* サイドバー */}
       <Navbar />
       {/* メインエリア */}
-      <div className="p-4 bg-base-background mb-[58px] md:ml-[280px] md:mb-0 h-svh ">  {children}
+      <div className="p-4 mb-[58px] md:ml-[280px] md:mb-0">  {children}
       </div>
     </>
   );

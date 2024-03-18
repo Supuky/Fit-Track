@@ -20,8 +20,8 @@ const DashboardPage = () => {
         href={`/dashboard/muscle-groups/?date=${date}`}
         className="mt-8 py-4 flex justify-center items-center gap-4 bg-primary hover:bg-primary-pale text-white rounded-xl shadow-xl max-w-[600px] m-auto"
       >
-        トレーニングを追加
         <Plus />
+        トレーニングを追加
       </Link>
       <Workouts value={value}/>
     </>

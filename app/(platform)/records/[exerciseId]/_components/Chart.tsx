@@ -41,8 +41,8 @@ const Chart: React.FC<ChartProps> = ({ records }) => {
               <stop offset="95%" stopColor="#7755F3" stopOpacity={0}/>
             </linearGradient>
           </defs>
-          <XAxis dataKey="workoutedAt" />
-          <YAxis dataKey="RM" tickFormatter={value => `${value}kg`}
+          <XAxis dataKey="workoutedAt" padding={{ left: 2 }}/>
+          <YAxis dataKey="RM"  tickFormatter={value => `${value}kg`}
           padding={{ bottom: 0 }}
           />
           <CartesianGrid strokeDasharray="0" vertical={false}/>

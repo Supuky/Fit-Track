@@ -6,6 +6,7 @@ import { formatDate, isSameDay } from 'date-fns';
 import useApi  from '@/app/_hooks/useApi';
 import { Value } from '@/types/calender';
 import './WorkoutCalendar.css';
+import { Dumbbell } from 'lucide-react';
 
 interface Props {
   value: Value;
@@ -54,7 +55,7 @@ const WorkoutCalendar: React.FC<Props> = ({
     if(view === "month") {
       for(let i = 0; i < workoutDays?.length; i++) {
         const workoutDay = workoutDays[i].workoutedAt;
-        if(isSameDay(date, workoutDay)) return "workout-day";
+        if(isSameDay(date, workoutDay)) return <div className="stamp text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-70"><Dumbbell size={20} className=" rotate-90"/></div>;
       };
     };
     return null;
@@ -77,7 +78,7 @@ const WorkoutCalendar: React.FC<Props> = ({
       locale='ja-JP'
       next2Label={null}
       prev2Label={null}
-      tileClassName={showWorkoutDays}
+      tileContent={showWorkoutDays}
       onActiveStartDateChange={changedMonth}
     />
   );

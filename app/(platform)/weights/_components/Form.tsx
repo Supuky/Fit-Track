@@ -51,7 +51,7 @@ const Form: React.FC<Props> = ({
         />
       </div>
       <div className="mb-8 flex justify-between items-center">
-        <label htmlFor="date" className="mr-4">日にち</label>
+        <label htmlFor="date" className="mr-4">測定日</label>
         <input 
           type="date" 
           id="date"  

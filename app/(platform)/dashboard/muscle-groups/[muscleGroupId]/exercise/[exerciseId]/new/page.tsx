@@ -93,7 +93,7 @@ const WorkoutRecordPage = () => {
 
   return (
     <form
-      className="max-w-[600px] bg-base-white px-8 py-4 rounded-xl shadow-xl text-base-black  md:w-4/6"
+      className="max-w-[600px] bg-base-white mt-10 px-8 py-4 rounded-xl shadow-xl text-base-black  md:w-4/6"
       onSubmit={handleSubmit(handleCreateWorkoutsSubmit)}
     >
       <div className="mb-4 flex justify-between items-center">
@@ -149,16 +149,16 @@ const WorkoutRecordPage = () => {
                 />
                 <span className="ml-1 mr-2">回</span>
                 <button type="button" onClick={() => reduce(index)}>
-                  <Trash2 className="w-5 hober:text-base-black hover:text-base-middle" />
+                  <Trash2 className="w-5 text-base-black/70 hover:text-base-middle" />
                 </button>
               </div>
             </div>
             {
               (errors.workouts && errors.workouts[index] && 
               (errors.workouts[index]!.weights || errors.workouts[index]!.reps)) && 
-                <div className="text-right text-red-500 mt-[-8px]">
+                <p className="text-right text-red-500 mt-[-8px] text-sm">
                   数字を入力してください。
-                </div>
+                </p>
             }
           </div>
         ))}
@@ -167,7 +167,7 @@ const WorkoutRecordPage = () => {
             type="button"
             onClick={() => [append({ reps: "", weights: "" }), countUp()]}
           >
-            <Plus className="text-white bg-primary rounded-3xl hover:bg-primary-pale" />
+            <Plus className="text-white bg-primary-complementary/70 rounded-3xl hover:bg-primary-complementary/50" />
           </button>
         </div>
       </div>

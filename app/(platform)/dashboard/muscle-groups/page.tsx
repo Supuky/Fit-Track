@@ -32,16 +32,16 @@ const MuscleGroupsPage = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center gap-8 flex-wrap max-w-[600px]">
+    <div className="flex justify-center items-center gap-8 flex-wrap max-w-[600px] mt-10">
       {
         muscleGroups.map(muscle => (
           <Link 
             key={muscle.id}
             href={`/dashboard/muscle-groups/${muscle.id}/exercise?date=${date}`}
-            className="p-12 flex flex-col items-center gap-2 bg-white rounded-xl shadow-xl text-base-black hover:bg-primary hover:text-base-white"
+            className="w-[120px] p-8 flex flex-col items-center gap-2 bg-white rounded-xl shadow-xl text-base-black/90 hover:opacity-80"
           >
-            <Dumbbell />
-            {muscle.name}
+              <Dumbbell size={30} className="rotate-[135deg] text-primary"/>
+              {muscle.name}
           </Link>
         ))
       }

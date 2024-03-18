@@ -16,6 +16,8 @@ const config: Config = {
       colors: {
         "primary": "#7755F3",
         "primary-pale": "#9F85FF",
+        "primary-complementary": "#55F378",
+        "primary-contrast": "#F3B655",
         "base-middle": "#B8B8B8",
         "base-black": "#363B40",
         "base-background": "#EEEFF3",

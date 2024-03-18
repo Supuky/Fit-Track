@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
               <p className="text-center text-base-black mt-2 md:text-lg lg:text-xl lg:text-left">あなたの筋トレの進捗を一目で確認できるように、<br/>魅力的なダッシュボードを提供します。</p>
               <div className="text-center mt-8 mb-8 lg:mb-0 lg:text-left">
                 <Link 
-                  href="/login" 
+                  href="/signup" 
                   className="px-4 py-2 font-bold bg-primary hover:bg-primary-pale text-white rounded-lg md:px-8 md:text-xl "
                 >
                   新規登録

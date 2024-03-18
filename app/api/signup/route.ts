@@ -20,12 +20,17 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    if (error) throw new Error();
+    console.log("error", error);
+
+    if (error) throw new Error("新規作成できませんでした。");
 
     // 新規登録したユーザーのデータ取得
     const { data, error: getUserError } = await supabase.auth.getUserIdentities();
 
-    if(getUserError) return new Error();
+    console.log("userId", data?.identities[0].user_id!);
+    console.log("getUserError", getUserError);
+
+    if(getUserError) throw new Error("エラーが発生しました。");
 
     // 新規登録したユーザーとプロフィールテーブルを紐付け
     const profile = await prisma.profiles.create({
@@ -35,7 +40,7 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json({ profile: profile }, { status: 200 });
-  } catch {
+  } catch(error) {
     return NextResponse.json({ message: "新規作成できませんでした。" }, { status: 400 });
   };
 };

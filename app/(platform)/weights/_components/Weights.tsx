@@ -14,9 +14,9 @@ const Weights: React.FC<Props> = ({ weights }) => {
       <Link 
         href="weights/new"
         className="flex justify-center items-center px-8 py-4 mt-4 rounded-xl shadow-xl max-w-[600px] m-auto bg-base-white
-        text-base-black"
+        hover:opacity-80"
       >
-        <Plus />
+        <Plus className="text-primary"/>
       </Link>
       {
         weights?.map((weight) => (

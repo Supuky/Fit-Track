@@ -15,7 +15,6 @@ const useApi = () => {
       };
 
       const data: ResponseType = await response.json();
-      console.log(data);
 
       return data;
     } catch (error) {
@@ -36,10 +35,9 @@ const useApi = () => {
         body: JSON.stringify(payload),
       });
 
-      if(!response.ok) throw new Error("保存に失敗しました。");
+      if(!response.ok) throw new Error("登録に失敗しました。");
 
       const data: ResponseType = await response.json();
-      console.log(data);
       
       return data;
     } catch (error) {
@@ -58,10 +56,9 @@ const useApi = () => {
         body: JSON.stringify(payload),
       });
 
-      if(!response.ok) throw new Error("保存に失敗しました。");
+      if(!response.ok) throw new Error("更新に失敗しました。");
 
       const data: ResponseType = await response.json();
-      console.log(data);
       
       return data;
     } catch (error) {
@@ -79,10 +76,9 @@ const useApi = () => {
         },
       });
 
-      if(!response.ok) throw new Error("保存に失敗しました。");
+      if(!response.ok) throw new Error("削除に失敗しました。");
 
       const data = await response.json();
-      console.log(data);
       
       return data;
     } catch (error) {

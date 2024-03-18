@@ -43,7 +43,7 @@ const RecordsPage = () => {
         muscles.map(muscle => (
           <>
             <div 
-              className="flex items-center px-8 py-4 mt-6 rounded-xl max-w-[600px] m-auto bg-base-white text-base-black" 
+              className="flex items-center px-8 py-4 mt-6 rounded-3xl max-w-[600px] m-auto  bg-primary text-base-white" 
               key={muscle.name}
             >
               { muscle.name }
@@ -53,9 +53,9 @@ const RecordsPage = () => {
               <div key={exercise.id}>
                 <Link
                   href={`/records/${exercise.id}`}
-                  className="flex items-center justify-center gap-2 p-4 mt-4 rounded-xl shadow-xl max-w-[600px] m-auto bg-primary hover:bg-primary-pale text-base-white"
+                  className="flex items-center gap-2 px-8 py-4 mt-4 rounded-xl shadow-xl max-w-[600px] m-auto  bg-base-white text-base-black/90 font-bold"
                 >
-                  <LineChart className="text-white"/>
+                  <LineChart className="text-primary"/>
                   {exercise.name}
                 </Link>
               </div>

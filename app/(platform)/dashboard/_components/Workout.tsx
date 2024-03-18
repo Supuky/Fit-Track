@@ -14,11 +14,13 @@ const Workout: React.FC<Props> = ({
     <Link
       href={`/dashboard/muscle-groups/${workout.muscleId}/exercise/${workout.exerciseId}/${workout.workoutDetailId}`}
       className="flex justify-between items-center px-8 py-4 mt-4 rounded-xl shadow-xl max-w-[600px] m-auto bg-base-white
-      text-base-black"
+      text-base-black/90"
     >
-      <Dumbbell className="text-primary"/>
-      <p>{workout.exercise}</p>
-      <p>{workout.rm}RM</p>
+      <div>
+        <Dumbbell size={30} className="text-primary rotate-[135deg]"/>
+        <p className="font-bold">{workout.exercise}</p>
+      </div>
+      <p className="text-base-middle">1RM: {workout.rm}kg</p>
     </Link>
   )
 }
