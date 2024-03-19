@@ -11,7 +11,7 @@ interface ApiResponse {
   muscleGroups: MuscleGroup[],
 };
 
-const MuscleGroupsPage = () => {
+export default function MuscleGroupsPage() {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
   const [muscleGroups, setMuscleGroups] = useState<MuscleGroup[] | null>(null);
@@ -48,5 +48,3 @@ const MuscleGroupsPage = () => {
     </div>
   );
 };
-
-export default MuscleGroupsPage;
