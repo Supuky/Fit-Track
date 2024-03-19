@@ -6,12 +6,13 @@ import Link from 'next/link';
 import { Dumbbell } from 'lucide-react';
 import { MuscleGroup } from '@/types/workout';
 import useApi from '@/app/_hooks/useApi';
+import { Suspense } from 'react'
 
 interface ApiResponse {
   muscleGroups: MuscleGroup[],
 };
 
-export default function MuscleGroupsPage() {
+const MuscleGroupsPage = () => {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
   const [muscleGroups, setMuscleGroups] = useState<MuscleGroup[] | null>(null);
@@ -32,19 +33,23 @@ export default function MuscleGroupsPage() {
   }, []);
 
   return (
-    <div className="flex justify-center items-center gap-8 flex-wrap max-w-[600px] mt-10">
-      {
-        muscleGroups?.map(muscle => (
-          <Link 
-            key={muscle.id}
-            href={`/dashboard/muscle-groups/${muscle.id}/exercise?date=${date}`}
-            className="w-[120px] p-8 flex flex-col items-center gap-2 bg-white rounded-xl shadow-xl text-base-black/90 hover:opacity-80"
-          >
-              <Dumbbell size={30} className="rotate-[135deg] text-primary"/>
-              {muscle.name}
-          </Link>
-        ))
-      }
-    </div>
+    <Suspense>
+      <div className="flex justify-center items-center gap-8 flex-wrap max-w-[600px] mt-10">
+        {
+          muscleGroups?.map(muscle => (
+            <Link 
+              key={muscle.id}
+              href={`/dashboard/muscle-groups/${muscle.id}/exercise?date=${date}`}
+              className="w-[120px] p-8 flex flex-col items-center gap-2 bg-white rounded-xl shadow-xl text-base-black/90 hover:opacity-80"
+            >
+                <Dumbbell size={30} className="rotate-[135deg] text-primary"/>
+                {muscle.name}
+            </Link>
+          ))
+        }
+      </div>  
+    </Suspense>
   );
 };
+
+export default MuscleGroupsPage;
