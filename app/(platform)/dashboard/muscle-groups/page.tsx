@@ -14,7 +14,7 @@ interface ApiResponse {
 const MuscleGroupsPage = () => {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
-  const [muscleGroups, setMuscleGroups] = useState<MuscleGroup[]>([]);
+  const [muscleGroups, setMuscleGroups] = useState<MuscleGroup[] | null>(null);
   const api = useApi();
 
   useEffect(() => {
