@@ -51,8 +51,6 @@ export async function PUT(
   const body = await request.json();
   
   const { memo, workouts } = body;
-
-  const setNumber = workouts.length;
   
   async function transfer() {
     return prisma.$transaction(async () => {
@@ -75,8 +73,6 @@ export async function PUT(
           memo: memo
         },
       });
-
-      console.log(workoutDetailUpdate);
   
       await prisma.setDetails.deleteMany({
         where: {
@@ -84,20 +80,20 @@ export async function PUT(
         },
       });
   
-      let exerciseSets = [];
-      for(let i = 0; i < setNumber; i++) {
-        exerciseSets.push({workoutDetailId: workoutDetail.id, setNumber: i+1, reps: parseInt(workouts[i].reps), weight: parseInt(workouts[i].weight) });
-      };
-
-      console.log(exerciseSets);
+      let exerciseSets = workouts.map((workout: {reps: string, weight: string}, i: number) => {
+        return {
+          workoutDetailId: workoutDetail.id,
+          setNumber: i + 1,
+          reps: parseInt(workout.reps),
+          weight: parseInt(workout.weight)
+        };
+      });
   
       const setDetails = await prisma.setDetails.createMany({
         data: [
           ...exerciseSets,
         ],
       });
-
-      console.log(setDetails);
 
       return { workoutDetail, setDetails };
     },
