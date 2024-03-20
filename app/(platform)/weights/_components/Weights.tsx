@@ -10,10 +10,10 @@ interface Props {
 
 const Weights: React.FC<Props> = ({ weights }) => {
   return (
-    <div className="max-w-[600px] w-2/3 m-auto">
+    <div className="max-w-[600px] w-full m-auto">
       <Link 
         href="weights/new"
-        className="flex justify-center items-center px-8 py-4 mt-4 rounded-xl shadow-xl max-w-[600px] m-auto bg-base-white
+        className="flex justify-center items-center px-8 py-4 mt-4 rounded-xl shadow-xl bg-base-white
         hover:opacity-80"
       >
         <Plus className="text-primary"/>

@@ -11,7 +11,7 @@ const WeightTab: React.FC = () => {
   const { weights } = useWeights();
 
   return (
-    <Tabs className="rounded-xl border-none mt-10">
+    <Tabs className="rounded-xl border-none mt-10 max-w-[600px] m-auto">
       <TabList>
         <Tab>一覧</Tab>
         <Tab>グラフ</Tab>

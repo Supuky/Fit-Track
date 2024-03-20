@@ -29,7 +29,7 @@ const Chart: React.FC<Props> = ({ weights }) => {
   };
 
   return (
-    <div className="h-[40svh]">
+    <div className="h-[50svh]">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           width={600}
