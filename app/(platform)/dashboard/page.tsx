@@ -1,15 +1,22 @@
 "use client"
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Value } from '@/types/calender';
 import { Plus } from 'lucide-react';
 import WorkoutCalendar from './_components/WorkoutCalendar';
 import Link from 'next/link';
 import Workouts from './_components/Workouts';
 import { format } from 'date-fns';
+import DashboardSkeleton from './_components/DashboardSkeleton';
 
 const DashboardPage = () => {
-  const [value, setValue] = useState<Value>(new Date());
+  const [value, setValue] = useState<Value>(null);
+
+  useEffect(() => {
+    setValue(new Date());
+  },[]);
+
+  if(!value) return <DashboardSkeleton />;
 
   const date = format(value!, "yyyy-MM-dd");
 
