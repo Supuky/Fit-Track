@@ -16,7 +16,7 @@ const Navbar = () => {
           <h1 className="font-bold text-primary text-xl">FitTrack</h1>
         </Link>
         <div className="space-x-4 md:w-auto">
-          <Link href="/login" className="px-4 py-2 flex items-center gap-2 bg-primary hover:bg-primary-pale text-white text-sm font-bold rounded-lg">
+          <Link href="/login" className="px-4 py-2.5  bg-primary hover:bg-primary-pale text-white text-sm font-bold rounded-lg">
             ログイン
           </Link>
         </div>

@@ -16,7 +16,7 @@ const Hero: React.FC = () => {
               <div className="text-center mt-8 mb-8 lg:mb-0 lg:text-left">
                 <Link 
                   href="/signup" 
-                  className="px-4 py-2 font-bold bg-primary hover:bg-primary-pale text-white rounded-lg md:px-8 md:text-xl "
+                  className="px-4 py-2.5 text-sm font-bold bg-primary hover:bg-primary-pale text-white rounded-lg md:px-8 md:text-xl "
                 >
                   新規登録
                 </Link>
@@ -33,7 +33,7 @@ const Hero: React.FC = () => {
               <Image 
                 src="/record.png"
                 alt="記録画面"
-                width={150}
+                width={250}
                 height={270}
                 className="block md:hidden rounded-xl shadow-xl"
               />
