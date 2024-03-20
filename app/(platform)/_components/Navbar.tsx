@@ -71,25 +71,25 @@ const Navbar = () => {
       <aside className="fixed bg-base-white flex justify-evenly items-center w-full left-0 bottom-0 border-l border md:hidden">
         <Link 
           href="/dashboard"
-          className={`flex justify-center gap-4 p-4 font-bold hover:bg-primary hover:text-base-white ${isSelected("dashboard") ? "text-primary" : "text-base-black"}`}
+          className={`flex justify-center gap-4 p-4 font-bold hover:text-base-middle ${isSelected("dashboard") ? "text-primary" : "text-base-black"}`}
         >
           <Home />
         </Link>
         <Link 
           href="/records"
-          className={`flex justify-center gap-4 p-4 font-bold hover:bg-primary hover:text-base-white ${isSelected("records") ? "text-primary" : "text-base-black"}`}
+          className={`flex justify-center gap-4 p-4 font-bold hover:text-base-middle ${isSelected("records") ? "text-primary" : "text-base-black"}`}
         >
           <LineChart />
         </Link>
         <Link 
           href="/weights"
-          className={`flex justify-center gap-4 p-4 font-bold hover:bg-primary hover:text-base-white ${isSelected("weight") ? "text-primary" : "text-base-black"}`}
+          className={`flex justify-center gap-4 p-4 font-bold hover:text-base-middle ${isSelected("weight") ? "text-primary" : "text-base-black"}`}
         >
           <Gauge />
         </Link>
         <button
             onClick={handleLogout}
-            className={`blcok p-4 font-bold hover:bg-primary hover:text-base-white`}
+            className={`blcok p-4 font-bold hover:text-base-middle`}
           >
             <LogOut />
           </button>
