@@ -23,7 +23,7 @@ const Form: React.FC<Props> = ({
 }) => {
   return (
     <div className="h-svh flex justify-center items-center">
-      <form onSubmit={onSubmit} className=" w-4/5 max-w-[600px] bg-base-white/80 p-8 rounded-xl shadow-xl text-base-black">
+      <form onSubmit={onSubmit} className="w-4/5 max-w-[480px] bg-base-white/80 p-8 rounded-xl shadow-xl text-base-black">
         <div className='mb-8 flex gap-2 items-center justify-center'>
           <Image 
             src="/logo.svg"
