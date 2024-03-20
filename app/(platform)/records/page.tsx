@@ -5,6 +5,7 @@ import { Exercise, MuscleGroup } from "@/types/workout";
 import { LineChart } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import RecordsSkeleton from "./_componets/RecordsSkeleton";
 
 interface ApiResponse {
   muscleGroups: MuscleGroup[],
@@ -12,8 +13,8 @@ interface ApiResponse {
 };
 
 const RecordsPage = () => {
-  const [muscles, setMuscles] = useState<MuscleGroup[]>([]);
-  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [muscles, setMuscles] = useState<MuscleGroup[] | null>(null);
+  const [exercises, setExercises] = useState<Exercise[] | null>(null);
   const api = useApi();
 
   useEffect(() => {
@@ -36,6 +37,8 @@ const RecordsPage = () => {
     fetcher();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if(!muscles || !exercises) return <RecordsSkeleton />;
 
   return(
     <>
