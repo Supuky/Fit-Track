@@ -7,6 +7,7 @@ import useApi  from '@/app/_hooks/useApi';
 import { Value } from '@/types/calender';
 import './WorkoutCalendar.css';
 import { Dumbbell } from 'lucide-react';
+import DashboardSkeleton from './DashboardSkeleton';
 
 interface Props {
   value: Value;
@@ -28,7 +29,7 @@ const WorkoutCalendar: React.FC<Props> = ({
 }) => {
   const [year, setYear] = useState(value?.getFullYear());
   const [month, setMonth] = useState(value?.getMonth());
-  const [workoutDays, setWorkoutDays] = useState<WorkoutDay[]>([]);
+  const [workoutDays, setWorkoutDays] = useState<WorkoutDay[] | null>(null);
   const api = useApi();
 
   useEffect(() => {
@@ -52,8 +53,8 @@ const WorkoutCalendar: React.FC<Props> = ({
   }, [year, month]);
 
   const showWorkoutDays = ({ date, view }: TileArgs) => {
-    if(view === "month") {
-      for(let i = 0; i < workoutDays?.length; i++) {
+    if(workoutDays && view === "month") {
+      for(let i = 0; i < workoutDays.length; i++) {
         const workoutDay = workoutDays[i].workoutedAt;
         if(isSameDay(date, workoutDay)) return <div className="stamp text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-70"><Dumbbell size={20} className=" rotate-90"/></div>;
       };
@@ -67,6 +68,8 @@ const WorkoutCalendar: React.FC<Props> = ({
       setYear(activeStartDate.getFullYear());
     };
   };
+
+  if(!workoutDays) return <DashboardSkeleton />;
 
   return (
     <Calendar 
