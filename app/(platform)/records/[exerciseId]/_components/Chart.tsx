@@ -28,7 +28,7 @@ const Chart: React.FC<ChartProps> = ({ records }) => {
     return value;
   };
   return (
-    <ResponsiveContainer width="100%" height="40%">
+    <ResponsiveContainer width="100%" height="50%">
         <AreaChart
           width={600}
           height={250}

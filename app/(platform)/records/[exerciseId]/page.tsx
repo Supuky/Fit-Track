@@ -8,8 +8,9 @@ import { format, parseISO } from "date-fns";
 import { MenuSquare } from "lucide-react";
 
 import "react-tabs/style/react-tabs.css";
-import Tab from "./_components/RecordTab";
 import useApi from "@/app/_hooks/useApi";
+import RecordSkeleton from "./_components/RecordSkeleton";
+import RecordTab from "./_components/RecordTab";
 
 interface ApiResponse {
   records: Record[],
@@ -17,7 +18,7 @@ interface ApiResponse {
 
 const RecordPage = () => {
   const { exerciseId } = useParams();
-  const [records, setRecords] = useState<Record[]>([]);
+  const [records, setRecords] = useState<Record[] | null>(null);
   const [selectedTab, setSelectedTab] = useState(0);
   const api = useApi();
 
@@ -50,19 +51,21 @@ const RecordPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exerciseId, selectedTab]);
 
+  if(!records) return <RecordSkeleton />;
+
   return (
     <>
       {records.length === 0 ? null : (
         <div
           className="flex items-center justify-center gap-2 px-8 py-4 my-4 rounded-xl max-w-[600px] m-auto bg-primary
-          text-base-white"
+          text-base-white shadow-xl"
         >
           <MenuSquare className="text-base-white" />
           <p className="">{records[0].name}</p>
         </div>
       )}
       <Chart records={records} />
-      <Tab onSelect={onSelect}/>
+      <RecordTab onSelect={onSelect}/>
     </>
   );
 };

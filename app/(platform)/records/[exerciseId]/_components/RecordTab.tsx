@@ -10,7 +10,7 @@ interface Props {
 
 const RecordTab: React.FC<Props> = ({ onSelect }) => {
   return (
-    <Tabs className="m-auto w-10/12 rounded-xl border-none" onSelect={onSelect}>
+    <Tabs className="mt-4 m-auto w-10/12 rounded-xl border-none" onSelect={onSelect}>
       <TabList>
         <Tab>1ヶ月</Tab>
         <Tab>6ヶ月</Tab>
