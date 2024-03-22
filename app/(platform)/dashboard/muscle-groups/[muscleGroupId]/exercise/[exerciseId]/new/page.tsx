@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
 import { Plus, Trash2 } from "lucide-react";
+import { ColorRing } from "react-loader-spinner";
 import { Exercise, WorkoutData } from "@/types/workout";
 import useApi from "@/app/_hooks/useApi";
 
@@ -28,7 +29,7 @@ const WorkoutRecordPage = () => {
     handleSubmit,
     reset,
     control,
-    formState: { errors },
+    formState: { isSubmitting, errors },
   } = useForm({
     // input の value の 初期値を設置
     defaultValues: {
@@ -184,12 +185,31 @@ const WorkoutRecordPage = () => {
         </div>
       </div>
       <input type="hidden" {...register(`date`)}  />
-      <button
+      {
+        isSubmitting ? 
+        <button
+            type="submit"
+            disabled
+            className="w-full py-2  bg-primary-pale text-white rounded-xl shadow-xl max-w-[600px] m-auto flex justify-center opacity-80"
+          >
+            <ColorRing
+              visible={true}
+              height="25"
+              width="25"
+              ariaLabel="color-ring-loading"
+              wrapperStyle={{ textAlign: "center" }}
+              wrapperClass="color-ring-wrapper"
+              colors={["#fff", "#fff", "#fff", "#fff", "#fff"]}
+            />
+          </button>
+        :
+        <button
         type="submit"
         className=" w-full py-2 bg-primary hover:bg-primary-pale text-white rounded-xl shadow-xl max-w-[600px] m-auto"
       >
         保存
       </button>
+      }
     </form>
   );
 };
