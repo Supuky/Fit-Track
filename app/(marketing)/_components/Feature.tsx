@@ -4,7 +4,7 @@ import React from 'react'
 const Feature:React.FC = () => {
   return (
     <>
-      <div className="py-8 mx-auto md:max-w-screen-lg lg:pt-20 lg:h-screen bg-base-white">
+      <div className="py-8 mx-auto md:max-w-screen-lg lg:pt-20 lg:h-screen">
         <div className="">
           <h2 className="text-xl text-center font-bold text-base-black md:text-2xl lg:text-4xl">サービスの特徴</h2>
           <div className="mx-auto w-full flex items-center flex-col md:max-w-screen-xl lg:mt-16 lg:flex-row lg:justify-between">
