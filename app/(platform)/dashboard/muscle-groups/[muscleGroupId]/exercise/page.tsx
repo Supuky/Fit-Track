@@ -41,14 +41,14 @@ const ExercisesPage = () => {
   }, [muscleGroupId]);
 
   return (
-    <div className="max-w-[600px]">
+    <div className="max-w-[600px] mt-10">
       {
         exercises.map(exercise => (
           <Link 
             key={exercise.id}
             // href={`/dashboard/muscle-groups/${muscleGroupId}/exercise/${exercise.id}`}
             href={`/dashboard/muscle-groups/${muscleGroupId}/exercise/${exercise.id}/new?date=${date}`}
-            className="w-72 py-4 mt-10 mb-8 flex items-center justify-center gap-4 bg-white rounded-xl shadow-xl text-base-black/90 md:w-96 hover:opacity-80"
+            className="w-72 py-4 mb-4 flex items-center justify-center gap-4 bg-white rounded-xl shadow-xl text-base-black/90 md:w-96 hover:opacity-80"
           >
             <Dumbbell size={30} className="rotate-[135deg] text-primary"/>
             {exercise.name}

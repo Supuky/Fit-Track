@@ -207,6 +207,7 @@ const WorkoutDetailPage = () => {
                 <input
                   type="number"
                   className="w-16 rounded-lg focus-visible:outline-primary bg-base-background text-center"
+                  step={"0.1"}
                   {...register(`workouts.${index}.weight`)}
                 />
                 <span className="ml-1 mr-2">kg</span>
@@ -228,7 +229,7 @@ const WorkoutDetailPage = () => {
               type="button"
               onClick={() => [append({ reps: "", weight: "" }), countUp()]}
             >
-              <Plus className="text-white bg-primary-complementary/80 rounded-3xl hover:bg-primary-complementary/50" />
+              <Plus className="text-white bg-primary rounded-3xl hover:bg-primary/70" />
             </button>
           </div>
         </div>

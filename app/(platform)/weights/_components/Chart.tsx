@@ -43,8 +43,8 @@ const Chart: React.FC<Props> = ({ weights }) => {
               <stop offset="95%" stopColor="#7755F3" stopOpacity={0} />
             </linearGradient>
             <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+              <stop offset="5%" stopColor="#F3B655" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#F3B655" stopOpacity={0} />
             </linearGradient>
           </defs>
           <XAxis dataKey="measuredAt" />
@@ -67,7 +67,7 @@ const Chart: React.FC<Props> = ({ weights }) => {
           <Area
             type="monotone"
             dataKey="bodyFatPercentage"
-            stroke="#82ca9d"
+            stroke="#F3B655"
             fillOpacity={1}
             fill="url(#colorPv)"
           />

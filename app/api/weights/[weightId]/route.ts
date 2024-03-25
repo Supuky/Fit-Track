@@ -1,4 +1,4 @@
-// import { PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { getUserData } from "@/utils/supabaseGetUser";
 import { prisma } from "@/lib/prisma";
@@ -50,8 +50,8 @@ export async function PUT(
         userId: data.user!.id,
       },
       data: {
-        weight: parseInt(weight),
-        bodyFatPercentage: parseInt(bodyFatPercentage),
+        weight: new Prisma.Decimal(parseFloat(weight)),
+        bodyFatPercentage: new Prisma.Decimal(parseFloat(bodyFatPercentage)),
         measuredAt: new Date(date),
       },
     });

@@ -85,7 +85,7 @@ export async function PUT(
           workoutDetailId: workoutDetail.id,
           setNumber: i + 1,
           reps: parseInt(workout.reps),
-          weight: parseInt(workout.weight)
+          weight: parseFloat(workout.weight)
         };
       });
   

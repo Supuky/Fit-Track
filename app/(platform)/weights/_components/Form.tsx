@@ -34,6 +34,7 @@ const Form: React.FC<Props> = ({
         <input 
           type="number" 
           id="weight" 
+          step={"0.1"}
           required
           className="p-2 rounded-xl focus-visible:outline-primary bg-base-background text-right"
           value={weight}
@@ -45,6 +46,7 @@ const Form: React.FC<Props> = ({
         <input 
           type="number" 
           id="bodyFatPercentage"  
+          step={"0.1"}
           className="p-2 rounded-xl focus-visible:outline-primary bg-base-background text-right"
           value={bodyFatPercentage}
           onChange={(e) => setBodyFatPercentage(e.target.value)}

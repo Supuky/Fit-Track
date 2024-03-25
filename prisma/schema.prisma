@@ -10,7 +10,7 @@ datasource db {
 model Profiles {
   id               String             @id @db.Uuid
   name             String?
-  height           Int?
+  height           Decimal?
   bodyMeasurements BodyMeasurements[]
   exercises        Exercises[]
   workouts         Workouts[]
@@ -21,8 +21,8 @@ model Profiles {
 model BodyMeasurements {
   id                Int       @id @default(autoincrement())
   userId            String    @db.Uuid
-  weight            Int
-  bodyFatPercentage Int?
+  weight            Decimal
+  bodyFatPercentage Decimal?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   measuredAt        DateTime?
@@ -47,7 +47,7 @@ model WorkoutDetails {
   id         Int          @id @default(autoincrement())
   workoutId  Int
   exerciseId Int
-  memo       String
+  memo       String?
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   setDetails SetDetails[]
@@ -62,7 +62,7 @@ model SetDetails {
   workoutDetailId Int
   setNumber       Int
   reps            Int
-  weight          Int
+  weight          Decimal
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
   workoutDetails  WorkoutDetails @relation(fields: [workoutDetailId], references: [id], onDelete: Cascade)

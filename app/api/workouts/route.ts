@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
         exercises.id AS "exerciseId",
         exercises.name AS exercise,
         "setDetails"."workoutDetailId",
-        MAX("setDetails".reps * "setDetails".weight / 40 + "setDetails".weight) AS RM
+        Round(MAX("setDetails".reps * "setDetails".weight / 40 + "setDetails".weight), 1) AS RM
       FROM 
         workouts
       INNER JOIN 
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
 
     let exerciseSets = [];
     for(let i = 0; i < setNumber; i++) {
-      exerciseSets.push({workoutDetailId: workoutDetail!.id, setNumber: i+1, reps: parseInt(workouts[i].reps), weight: parseInt(workouts[i].weights) });
+      exerciseSets.push({workoutDetailId: workoutDetail!.id, setNumber: i+1, reps: parseInt(workouts[i].reps), weight: parseFloat(workouts[i].weights) });
     };
 
     const setDetails = await prisma.setDetails.createMany({
