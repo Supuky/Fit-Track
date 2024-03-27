@@ -22,6 +22,7 @@ export default function SignupPage() {
       });
 
       if(response.status === 200) {
+        alert("アカウント登録が成功しました。\nログインしてください。");
         router.push("/login");
       };
     } catch (error) {

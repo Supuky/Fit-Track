@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import React from 'react';
-import { Mail, KeyRound } from 'lucide-react';
+import { Mail, KeyRound, LogIn } from 'lucide-react';
 
 interface Props {
   mode : "signup" | "login",
@@ -86,7 +86,7 @@ const Form: React.FC<Props> = ({
             className="w-full text-white bg-primary hover:bg-primary-pale focus:ring-4 focus:outline-none focus:ring-primary-pale focus-visible:outline-primary font-medium rounded-lg text-sm px-5 py-2 text-center"
           >
             {
-              mode === "signup" ? "新規登録" : "ログイン"
+              mode === "signup" ? "新規登録" : <span className="flex justify-center items-center"><LogIn size={20} className="mr-2"/> ログイン</span>
             }
           </button>
         </div>
