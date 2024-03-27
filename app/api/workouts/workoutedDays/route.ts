@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
         userId: data.user!.id,
         workoutedAt: {
           gte: new Date(parseInt(yearParam!), parseInt(monthParam!), 1),
-          lt: new Date(parseInt(yearParam!), parseInt(monthParam!) % 12 + 1, 0),
+          lt: new Date(parseInt(yearParam!), parseInt(monthParam!) % 12 + 1, 1),
         }
       },
       select: {
