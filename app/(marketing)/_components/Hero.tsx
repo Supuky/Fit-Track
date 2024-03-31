@@ -28,14 +28,14 @@ const Hero: React.FC = () => {
                 alt="記録画面"
                 width={320}
                 height={568}
-                className="hidden md:block rounded-xl shadow-xl"
+                className="hidden md:block"
               />
               <Image 
                 src="/dashboard.png"
                 alt="記録画面"
                 width={250}
-                height={270}
-                className="block md:hidden rounded-xl shadow-xl"
+                height={489}
+                className="block md:hidden"
               />
             </div>
           </div>
