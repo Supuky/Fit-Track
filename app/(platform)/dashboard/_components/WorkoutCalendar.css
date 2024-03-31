@@ -138,16 +138,14 @@
 }
 
 .react-calendar__tile--now {
-  background: #F3B655;
-  /* background: #55F378; */
+  background: #1ad792;
   opacity: 1;
   color: white;
 }
 
 .react-calendar__tile--now:enabled:hover,
 .react-calendar__tile--now:enabled:focus {
-  background: #F3B655;
-  /* background: #55F378; */
+  background: #1ad792;
   opacity: 0.8;
 }
 
