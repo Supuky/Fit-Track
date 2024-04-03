@@ -33,8 +33,7 @@ const WeightPage = () => {
           setDate(format(measuredAt, "yyyy-MM-dd"));
         };
       } catch (error) {
-        console.log(error);
-        alert("取得に失敗しました。");
+        console.error(error);
       };
     };
 

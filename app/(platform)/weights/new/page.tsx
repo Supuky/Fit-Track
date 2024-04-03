@@ -21,7 +21,7 @@ const WeightsNewPage = () => {
       alert("作成しました。");
       router.push("/weights");
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert("新規作成できませんでした。");
     };
   };

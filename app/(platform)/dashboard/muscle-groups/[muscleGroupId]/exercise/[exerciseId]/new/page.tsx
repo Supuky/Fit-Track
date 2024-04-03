@@ -82,8 +82,7 @@ const WorkoutRecordPage = () => {
           setMuscle(muscleGroups.name);
         };
       } catch (error) {
-        console.log(error);
-        alert("取得に失敗しました。");
+        console.error(error);
       };
     };
 

@@ -42,8 +42,7 @@ const WorkoutCalendar: React.FC<Props> = ({
           setWorkoutDays(workoutDays);
         }
       } catch (error) {
-        console.log(error);
-        alert("取得に失敗しました。");
+        console.error(error);
       }
     };
     

@@ -34,8 +34,7 @@ const Workouts: React.FC<Props> = ({
           setWorkouts(workouts);
         };
       } catch (error) {
-        console.log(error);
-        alert("取得に失敗しました。");
+        console.error(error);
       };
     };
 

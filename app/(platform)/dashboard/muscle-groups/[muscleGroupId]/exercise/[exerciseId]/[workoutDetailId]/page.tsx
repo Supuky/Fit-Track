@@ -59,7 +59,7 @@ const WorkoutDetailPage = () => {
       alert("更新しました。");
       router.push("/dashboard");
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert("更新に失敗しました。");
     }
   };
