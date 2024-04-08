@@ -33,8 +33,8 @@ const Hero: React.FC = () => {
               <Image 
                 src="/dashboard.png"
                 alt="記録画面"
-                width={250}
-                height={489}
+                width={220}
+                height={430}
                 className="block md:hidden"
               />
             </div>
