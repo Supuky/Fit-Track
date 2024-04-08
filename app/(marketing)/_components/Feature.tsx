@@ -1,5 +1,8 @@
+import React from 'react';
 import Image from 'next/image';
-import React from 'react'
+
+import { LineChart, Database, FilePenLine } from 'lucide-react';
+
 
 const Feature:React.FC = () => {
   return (
@@ -11,36 +14,45 @@ const Feature:React.FC = () => {
             {/* 以下をコンポーネントにしてもいいかも featureDetail*/}
             <div className="text-center mt-8 lg:mt-0">
               <Image 
-                src="/dashboard.png"
-                alt="記録画面"
-                width={250}
-                height={490}
+                src="/exercise.png"
+                alt="トレーニング記録画面"
+                width={200}
+                height={390}
                 className="m-auto"
               />
-              <p className="text-base-black font-bold mt-4 lg:text-lg">筋トレ内容の確認・記録</p>
+              <p className="text-base-black font-bold mt-4 lg:text-lg flex items-center justify-center gap-2">
+                <LineChart className="text-primary"/>
+                成長をグラフで確認
+              </p>
+              <p className="text-base-black">モチベーションの維持！</p>
+            </div>
+            <div className="text-center mt-8 lg:mt-0">
+              <Image 
+                src="/dashboard.png"
+                alt="記録画面"
+                width={200}
+                height={390}
+                className="m-auto"
+              />
+              <p className="text-base-black font-bold mt-4 lg:text-lg flex items-center justify-center gap-2">
+                <Database className="text-primary"/>
+                筋トレ内容の確認・記録
+              </p>
               <p className="text-base-black">日にち毎に記録が確認可能！</p>
             </div>
             <div className="text-center mt-8 lg:mt-0">
               <Image 
                 src="/form.png"
                 alt="トレーニング入力画面"
-                width={250}
-                height={490}
+                width={200}
+                height={390}
                 className="m-auto"
               />
-              <p className="text-base-black font-bold mt-4 lg:text-lg">トレーニングの詳細を入力</p>
+              <p className="text-base-black font-bold mt-4 lg:text-lg flex items-center justify-center gap-2">
+                <FilePenLine className="text-primary"/>
+                トレーニングの詳細を入力
+              </p>
               <p className="text-base-black">セット数や重量を入力！</p>
-            </div>
-            <div className="text-center mt-8 lg:mt-0">
-              <Image 
-                src="/exercise.png"
-                alt="トレーニング記録画面"
-                width={250}
-                height={490}
-                className="m-auto"
-              />
-              <p className="text-base-black font-bold mt-4 lg:text-lg">成長をグラフで確認</p>
-              <p className="text-base-black">モチベーションの維持！</p>
             </div>
           </div>
         </div>
