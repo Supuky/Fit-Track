@@ -12,6 +12,77 @@
 # URL
  https://fit-track-seven.vercel.app/<br >
 
+# DB設計
+```mermaid
+  erDiagram
+    profiles ||--o{ bodyMeasurements : "ユーザーは複数の身体記録を持つ" 
+    profiles ||--o{ workouts : "ユーザーは複数のトレーニング記録を持つ" 
+    profiles ||--o{ exercises : "ユーザーは複数のトレーニング種目を持つ" 
+    muscleGroups ||--o{ exercises : "筋肉の部位は複数のトレーニング種目を持つ" 
+    exercises ||--o{ workoutDetails : "種目は筋肉の部位ごとに複数のトレーニング種目を持つ" 
+    workouts ||--o{ workoutDetails : "トレーニングは複数のトレーニング詳細の記録を持つ" 
+    workoutDetails ||--o{ setDetails : "トレーニング詳細は複数のセットの詳細の記録を持つ" 
+
+    profiles {
+        string id PK
+        string name
+        decimal height
+    }
+
+    bodyMeasurements {
+        int id PK
+        references userId FK 
+        decimal weight
+        decimal bodyFatParcentage
+        timestamp measuredAt
+        timestamp createdAt
+        timestamp updatedAt
+    }
+
+    workouts {
+        int id PK
+        references userId FK
+        timestamp workoutedAt
+        timestamp createdAt
+        timestamp updatedAt
+    }
+
+    workoutDetails {
+        int id PK
+        references workoutId FK
+        references exerciseId FK 
+        string memo
+        timestamp createdAt
+        timestamp updatedAt
+    }
+
+    setDetails {
+        int id PK
+        references workoutDetailId FK
+        int setNumber
+        int reps
+        decimal weight
+        timestamp createdAt
+        timestamp updatedAt
+    }
+
+    muscleGroups {
+        int id PK
+        string name
+        timestamp createdAt
+        timestamp updatedAt
+    }
+
+    exercises {
+        int id PK
+        references userId FK
+        references muscleGroupId FK
+        string name
+        timestamp createdAt
+        timestamp updatedAt
+    }
+```
+
 # 使用技術
  - TypeScript
  - Next.js 14.1.0
